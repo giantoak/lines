@@ -40,8 +40,15 @@ var plot = AdjustablePlot()
             .y('unemployment')
             .ctrl('college_plus_frac');
 
-//d3.csv('http://ec2-54-234-196-121.compute-1.amazonaws.com/ocpu/library/rlines/data/cross_section/csv/', function(d) {
-d3.json('http://ec2-54-234-196-121.compute-1.amazonaws.com/ocpu/library/rlines/data/cross_section/json/', function(d) {
+//d3.json('http://ec2-54-234-196-121.compute-1.amazonaws.com/ocpu/library/rlines/data/cross_section/json/', function(d) {
+//function(d) {
+//    svg.datum(d)
+//       .call(plot);
+//});
+d3.json('http://ec2-54-234-196-121.compute-1.amazonaws.com/ocpu/library/rlines/R/counts.for.region/json/') 
+.header("Content-Type", "application/x-www-form-urlencoded")
+.post("region=\'nova\'", function(error, d) {
+console.log(d)
     svg.datum(d)
        .call(plot);
 });
