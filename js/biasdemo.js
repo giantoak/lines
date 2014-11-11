@@ -18,7 +18,7 @@ var output_div = d3.select('#outputs')
     .attr('class', 'output');
 
 //var parseDate = d3.time.format("%Y-%m-%d").parse;
-var parseDate = d3.time.format("%Y-%m-%d %H:%M:%S").parse;
+//var parseDate = d3.time.format("%Y-%m-%d %H:%M:%S").parse;
 
 var svg = output_div
     .append('svg:svg')
@@ -52,11 +52,13 @@ d3.json('http://ec2-54-234-196-121.compute-1.amazonaws.com/ocpu/library/rlines/R
 .header("Content-Type", "application/x-www-form-urlencoded")
 // need to set content type as form encoded
 .post("region=\'nova\'", function(error, data) {
-	data.forEach(function(d) {
-	  d.MonthDate = parseDate(d.MonthDate);
-	  d.counts = +d.counts;
-	});
+//	data.forEach(function(d) {
+//	  d.MonthDate = parseDate(d.MonthDate);
+//	  d.counts = +d.counts;
+//	});
 // Parse the input JSON data as months
+console.log(data)
+console.log("About to do svg")
         svg.datum(data)
            .call(plot);
 });

@@ -1,3 +1,5 @@
+var parseDate = d3.time.format("%Y-%m-%d %H:%M:%S").parse;
+
 function AdjustablePlot(data){
     "use strict";
     /***************************************
@@ -88,7 +90,7 @@ function AdjustablePlot(data){
     };
     genPlot.adjust = function(user_provided_func) {
         adjust = function (row, beta) {
-            var x = parseFloat(row[xcol]),
+            var x = parseDate(row[xcol]),
             y = parseFloat(row[ycol]),
             ctrl = parseFloat(row[ctrlcol]);
 
@@ -136,7 +138,8 @@ function AdjustablePlot(data){
 
         svg.each(function(data, i) {
             data = data.filter(function (d) {
-                var filtered = (! (_check_nan(d[xcol]) || 
+                var filtered = (! (
+//_check_nan(d[xcol]) || 
                         _check_nan(d[ycol]) || 
                         _check_nan(d[ctrlcol])));
                 
@@ -144,7 +147,7 @@ function AdjustablePlot(data){
                 return filtered;
             });
             var xextent  = d3.extent(data, function(d) { 
-                return parseFloat(d[xcol]); 
+                return parseDate(d[xcol]); 
             }),
             cextent = d3.extent(data, function(d) { 
                 return parseFloat(d[ctrlcol]); 
@@ -166,6 +169,7 @@ function AdjustablePlot(data){
             console.log('xmin ' + xmin)
             
             var ymin = d3.extent(data, function(d) { 
+                return parseFloat(d[ycol])
                 return parseFloat(d[ycol])/(1 + parseFloat(d[xcol] * cmax / 1));
             })[0];
             var ymax = d3.extent(data, function(d) { 
@@ -231,7 +235,7 @@ function AdjustablePlot(data){
                 .data(data)
                 .enter()
                     .append('svg:circle')
-                    .attr('cx', function(d) { return sx(d[xcol]); })
+                    .attr('cx', function(d) { return sx(parseDate(d[xcol])); })
                     .attr('cy', function(d) { return sy(adjust(d, 0)); })
                     .attr('r', r)
                     .attr('opacity', alpha);
