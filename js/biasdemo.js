@@ -40,7 +40,8 @@ var plot = AdjustablePlot()
             .y('unemployment')
             .ctrl('college_plus_frac');
 
-d3.csv('../data/region_level_acs_crime_adjusted.csv', function(d) {
+//d3.csv('http://ec2-54-234-196-121.compute-1.amazonaws.com/ocpu/library/rlines/data/cross_section/csv/', function(d) {
+d3.json('http://ec2-54-234-196-121.compute-1.amazonaws.com/ocpu/library/rlines/data/cross_section/json/', function(d) {
     svg.datum(d)
        .call(plot);
 });
