@@ -17,6 +17,9 @@ var output_div = d3.select('#outputs')
     .append('div')
     .attr('class', 'output');
 
+//var parseDate = d3.time.format("%Y-%m-%d").parse;
+var parseDate = d3.time.format("%Y-%m-%d %H:%M:%S").parse;
+
 var svg = output_div
     .append('svg:svg')
     .attr('width', 400)
@@ -36,9 +39,9 @@ var plot = AdjustablePlot()
             //.x('countspercapita')
             //.y('lprice')
             //.ctrl('completeness');
-            .x('lpop')
-            .y('unemployment')
-            .ctrl('college_plus_frac');
+            .x('MonthDate')
+            .y('counts')
+            .ctrl('counts');
 
 //d3.json('http://ec2-54-234-196-121.compute-1.amazonaws.com/ocpu/library/rlines/data/cross_section/json/', function(d) {
 //function(d) {
@@ -47,9 +50,14 @@ var plot = AdjustablePlot()
 //});
 d3.json('http://ec2-54-234-196-121.compute-1.amazonaws.com/ocpu/library/rlines/R/counts.for.region/json/') 
 .header("Content-Type", "application/x-www-form-urlencoded")
-.post("region=\'nova\'", function(error, d) {
-console.log(d)
-    svg.datum(d)
-       .call(plot);
+// need to set content type as form encoded
+.post("region=\'nova\'", function(error, data) {
+	data.forEach(function(d) {
+	  d.MonthDate = parseDate(d.MonthDate);
+	  d.counts = +d.counts;
+	});
+// Parse the input JSON data as months
+        svg.datum(data)
+           .call(plot);
 });
 

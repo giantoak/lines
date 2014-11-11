@@ -150,6 +150,8 @@ function AdjustablePlot(data){
                 return parseFloat(d[ctrlcol]); 
             });
             
+            console.log(data)
+            console.log(data[0])
             var columns = Object.keys(data[0]);
 
             var xmin = xextent[0],
@@ -169,11 +171,17 @@ function AdjustablePlot(data){
             var ymax = d3.extent(data, function(d) { 
                 return parseFloat(d[ycol])/(1 + parseFloat(d[xcol] * cmin / 20));
             })[1];
+            var ymax = 2000;
+            var ymin = 0;
             console.log('ymax ' + ymax)
             console.log('ymin ' + ymin)
 
-            sx = d3.scale.linear()
-                .domain([xmin, xmax])
+            console.log(data[0])
+            sx = d3.time.scale()
+	        .domain([new Date(data[0].MonthDate), d3.time.day.offset(new Date(data[data.length - 1].MonthDate), 1)])
+                //.ticks(d3.time.month, 1)
+                //.rangeRound([0, width - margin.left - margin.right]);
+                //.domain([xmin, xmax])
                 .range([pad.left*2, dim.w-pad.right*2]);
             sy = d3.scale.linear()
                 .domain([ymin, ymax])
@@ -191,6 +199,7 @@ function AdjustablePlot(data){
             
             var xAxis = d3.svg.axis()
                 .scale(sx)
+                .ticks(d3.time.month)
                 .orient('bottom'),
                 yAxis = d3.svg.axis()
                 .scale(sy)
