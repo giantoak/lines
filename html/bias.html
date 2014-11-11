@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script type="text/javascript" src="../js/d3-3.4.11.min.js"></script>
+<style>
+body {
+    font-family: 'Open Sans', sans-serif;
+}
+
+#content {
+    margin-left: 10%;
+}
+
+#content > div{
+    display: inline-block;
+}
+
+#container {
+    vertical-align: top;
+    margin-top: 50px;
+}
+.subcontainer {
+    width: 400px;
+}
+
+#intro {
+    margin-bottom: 50px;
+}
+
+#outputs {
+    border-style: dotted;
+}
+
+.output {
+    border-style: solid;
+    height: 400px;
+    width: 400px;
+}
+
+#inputs {
+    height: 100px;
+    border-style: dotted;
+    margin-right: 30px;
+}
+
+.input-text {
+    margin: 10px;
+    text-align: center;
+}
+
+.input-ctrl {
+    display: block;
+    margin: 30px auto;
+    width: 300px;
+}
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: black;
+    shape-rendering: crispEdges;
+}
+
+.axis text {
+    font-size: 12px;
+}
+
+.text-label {
+    font-size: 12px;
+}
+
+</style>
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+</head>
+
+
+
+<body>
+<div id ='content'>
+<h3 class='title'>Sliding adjustment of biased data</h3>
+<div id='container'>
+    <div class='subcontainer' id ='intro'>
+        We designed this tool to give analysts a sense for the hidden variables that mediate relationships between variables in a dataset. 
+        <p>
+        This particular graph allows the exploration of how the
+        relationship between unemployment and city size (logged) is
+        mediated by the educational makeup of a city. 
+        <p> Unemployment tends to
+        be concentrated in large cities, which attract those from smaller
+        places looking for jobs and experience larger business cycles.
+        This suggests a positive slope to the
+        relationship between unemployment.  
+        <p>
+        Generally, since unemployment is negatively related to education
+        (i.e. unemployment is lower in more highly educated places), and
+        since the highly educated tend to live in larger cities, the
+        relationship between unemployment and population is even stronger
+        than it initially appears.
+        <p> You can explore this relationship by increasing the weight on educational
+        composition, and watching the effect on the slope. 
+    </div>
+    <div class='subcontainer' id='inputs'></div>
+    <p> Weight on Educational Composition
+    <!--SAM TODO: Stick this label somewhere better-->
+</div>
+
+<div id='outputs'>
+</div>
+</div>
+<script src='../js/adjustableplot.js'></script>
+<script src='../js/biasdemo.js'></script>
+</body>
+</html>
