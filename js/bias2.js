@@ -31,16 +31,16 @@ var rebias = function (x, y, ctrl, beta) {
     return adj_y;
 };
 
-var plot = AdjustablePlot()
-            .input(input)
-            .input_text(input_text)
-            .adjust(rebias)
-            //.x('countspercapita')
-            //.y('lprice')
-            //.ctrl('completeness');
-            .x('MonthDate')
-            .y('counts')
-            .ctrl('counts');
+//var plot = AdjustablePlot()
+            //.input(input)
+            //.input_text(input_text)
+            //.adjust(rebias)
+            ////.x('countspercapita')
+            ////.y('lprice')
+            ////.ctrl('completeness');
+            //.x('MonthDate')
+            //.y('counts')
+            //.ctrl('counts');
 
 var margin = {top: 20, right: 20, bottom: 30, left: 50},
     width = 960 - margin.left - margin.right,
@@ -65,7 +65,11 @@ var yAxis = d3.svg.axis()
 
 var line = d3.svg.line()
     .x(function(d) { return x(d.MonthDate); })
-    .y(function(d) { return y(d.counts); });
+    .y(function(d) { return y(d.target); });
+
+var line2 = d3.svg.line()
+    .x(function(d) { return x(d.MonthDate); })
+    .y(function(d) { return y(d.comparison); });
 
 var svg = d3.select("body").append("svg")
     .attr("width", width + margin.left + margin.right)
@@ -74,20 +78,22 @@ var svg = d3.select("body").append("svg")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 
-d3.json('http://ec2-54-234-196-121.compute-1.amazonaws.com/ocpu/library/rlines/R/counts.for.region/json/') 
+d3.json('http://ec2-54-234-196-121.compute-1.amazonaws.com/ocpu/library/rlines/R/twolines/json/') 
 .header("Content-Type", "application/x-www-form-urlencoded")
 // need to set content type as form encoded
-.post("region=\'nova\'", function(error, data) {
+.post("target.region=\'nova\'&comparison.region=c(\'dc\',\'baltimore\')", function(error, data) {
 	data.forEach(function(d) {
 	  d.MonthDate = parseDate(d.MonthDate);
-	  d.counts = +d.counts;
+	  d.target = +d.target;
+	  d.comparison = +d.comparison;
 	});
 // Parse the input JSON data as months
 console.log(data)
 console.log("About to do svg")
 x = x.domain(d3.extent(data, function(d){ return d.MonthDate;}));
 console.log(x)
-y = y.domain(d3.extent(data, function(d){ return d.counts;}));
+y = y.domain(d3.extent(data, function(d){ return d.target;}));
+yt = y.domain(d3.extent(data, function(d){ return d.target;}));
 
 
   svg.append("g")
@@ -103,7 +109,7 @@ y = y.domain(d3.extent(data, function(d){ return d.counts;}));
       .attr("y", 6)
       .attr("dy", ".71em")
       .style("text-anchor", "end")
-      .text("Price ($)");
+      .text("Ad Count");
 
 console.log(data)
   svg.append("path")
@@ -111,6 +117,11 @@ console.log(data)
       .attr("class", "line")
       .attr("d", line);
 
+console.log(data)
+  svg.append("path")
+      .datum(data)
+      .attr("class", "line2")
+      .attr("d", line2);
 });
 
 
