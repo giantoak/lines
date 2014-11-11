@@ -92,8 +92,11 @@ console.log(data)
 console.log("About to do svg")
 x = x.domain(d3.extent(data, function(d){ return d.MonthDate;}));
 console.log(x)
-y = y.domain(d3.extent(data, function(d){ return d.target;}));
-yt = y.domain(d3.extent(data, function(d){ return d.target;}));
+var maxY = d3.max(data, function(d) { return Math.max(d.target, d.comparison); });  
+var minY = d3.min(data, function(d) { return Math.min(d.target, d.comparison); });  
+y = y.domain([minY, maxY]);
+//y = y.domain(d3.extent(data, function(d){ return d.target;}));
+//yt = y.domain(d3.extent(data, function(d){ return d.target;}));
 
 
   svg.append("g")
