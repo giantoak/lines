@@ -81,7 +81,7 @@ var svg = d3.select("body").append("svg")
 d3.json('http://ec2-54-234-196-121.compute-1.amazonaws.com/ocpu/library/rlines/R/twolines/json/') 
 .header("Content-Type", "application/x-www-form-urlencoded")
 // need to set content type as form encoded
-.post("target.region=\'nova\'&comparison.region=c(\'dc\',\'baltimore\')", function(error, data) {
+.post("target.region=\'nova\'&comparison.region.set=c(\'dc\',\'baltimore\')", function(error, data) {
 	data.forEach(function(d) {
 	  d.MonthDate = parseDate(d.MonthDate);
 	  d.target = +d.target;

@@ -2,6 +2,8 @@ Package: rlines
 Type: Package
 Title: What the package does (short line)
 Version: 1.0
+Imports:
+    plyr
 Date: 2014-11-10
 Author: Jeffrey Borowitz <jeffrey.borowitz@giantoak.com>
 Maintainer: Jeffrey Borowitz <jeffrey.borowitz@giantoak.com>
