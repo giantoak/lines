@@ -64,7 +64,7 @@ var yAxis = d3.svg.axis()
     .orient("left");
 
 var line = d3.svg.line()
-    .x(function(d) { return x(parseDate(d.MonthDate)); })
+    .x(function(d) { return x(d.MonthDate); })
     .y(function(d) { return y(d.counts); });
 
 var svg = d3.select("body").append("svg")
@@ -85,11 +85,9 @@ d3.json('http://ec2-54-234-196-121.compute-1.amazonaws.com/ocpu/library/rlines/R
 // Parse the input JSON data as months
 console.log(data)
 console.log("About to do svg")
-x = d3.time.scale()
-.domain(d3.extent(data, function(d){ return d.MonthDate;}));
+x = x.domain(d3.extent(data, function(d){ return d.MonthDate;}));
 console.log(x)
-y = d3.scale.linear()
-.domain(d3.extent(data, function(d){ return d.counts;}));
+y = y.domain(d3.extent(data, function(d){ return d.counts;}));
 
 
   svg.append("g")
