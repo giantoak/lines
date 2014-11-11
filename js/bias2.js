@@ -13,17 +13,17 @@ var input_text = d3.select('#inputs')
     .attr('class', 'input-text')
     .text(0);
 
-var output_div = d3.select('#outputs')
-    .append('div')
-    .attr('class', 'output');
+//var output_div = d3.select('#outputs')
+    //.append('div')
+    //.attr('class', 'output');
 
 //var parseDate = d3.time.format("%Y-%m-%d").parse;
 
-var svg = output_div
-    .append('svg:svg')
-    .attr('width', 400)
-    .attr('height', 400)
-    .attr('fill-opacity', 1);
+//var svg = output_div
+    //.append('svg:svg')
+    //.attr('width', 400)
+    //.attr('height', 400)
+    //.attr('fill-opacity', 1);
 
 var rebias = function (x, y, ctrl, beta) {
     var denom = 1 + beta*ctrl;
