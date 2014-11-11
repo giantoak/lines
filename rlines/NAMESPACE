@@ -1,2 +1,3 @@
 import(plyr)
+import(reshape2)
 exportPattern("^[[:alpha:]]+")
