@@ -46,8 +46,8 @@ var margin = {top: 20, right: 20, bottom: 30, left: 50},
     width = 960 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
 
-//var parseDate = d3.time.format("%d-%b-%y").parse;
 var parseDate = d3.time.format("%Y-%m-%d %H:%M:%S").parse;
+var parseDateInput = d3.time.format("%Y-%m-%d").parse;
 
 var x = d3.time.scale()
     .range([0, width]);
@@ -62,6 +62,7 @@ var xAxis = d3.svg.axis()
 var yAxis = d3.svg.axis()
     .scale(y)
     .orient("left");
+var maxY, maxX
 
 var line = d3.svg.line()
     .x(function(d) { return x(d.MonthDate); })
@@ -71,6 +72,27 @@ var line2 = d3.svg.line()
     .x(function(d) { return x(d.MonthDate); })
     .y(function(d) { return y(d.comparison); });
 
+var vline = d3.svg.line()
+	.x(function(d) { return x(d.MonthDate); })
+	.y(function(d) { return y(d.counts); });
+
+function plot_event(event_date){
+	    var vline_data = [{ "MonthDate ":parseDateInput(event_date), "counts":y.range()[1]}, { "MonthDate ":parseDateInput(event_date), "counts":y.range()[0]}];
+	    console.log(vline_data)
+            // Check how the data for the vertical line is looking
+	    svg.append("path")
+		.datum(vline_data)
+		.attr("class", "eventline")
+		.attr("id", "vline")
+		.attr("d", vline);
+            // Add the vertical line to graph
+
+}
+$('#diffdate').bind('input', function() {
+	    // This function executes when the date is changed
+	    var event_date = $('#diffdate').val()
+            plot_event(event_date)
+	    });
 var svg = d3.select("body").append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
