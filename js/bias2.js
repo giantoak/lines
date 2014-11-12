@@ -94,6 +94,7 @@ $('#diffdate').bind('input', function() {
 		var event_date = $('#diffdate').val()
 		plot_event(event_date)
 		});
+function plot(target, comparison, date){
 var svg = d3.select("body").append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
@@ -101,10 +102,12 @@ var svg = d3.select("body").append("svg")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 
-d3.json('http://ec2-54-234-196-121.compute-1.amazonaws.com/ocpu/library/rlines/R/twolines/json/') 
+var data.string = "target.region=\'" + target + "\'&comparison.region.set=c(\'" + comparison.join('\\\',\\\'') + "\')&event.date=\'" + date +"\'"
+console.log(data.string)
+d3.json('http://ec2-54-234-196-121.compute-1.amazonaws.com/ocpu/library/rlines/R/diffindiff/json/') 
 .header("Content-Type", "application/x-www-form-urlencoded")
 // need to set content type as form encoded
-.post("target.region=\'nova\'&comparison.region.set=c(\'dc\',\'baltimore\')", function(error, data) {
+.post(data.string, function(error, data) {
 	data.forEach(function(d) {
 	  d.MonthDate = parseDate(d.MonthDate);
 	  d.target = +d.target;
@@ -149,11 +152,4 @@ console.log(data)
       .attr("class", "line2")
       .attr("d", line2);
 });
-
-
-
-
-//        svg.datum(data)
-//           .call(plot);
-//});
-
+};
