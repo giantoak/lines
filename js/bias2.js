@@ -1,4 +1,4 @@
-r input = d3.select('#inputs')
+var input = d3.select('#inputs')
     .append('div')
     .append('input')
     .attr('class', 'input-ctrl')
@@ -102,12 +102,12 @@ var svg = d3.select("body").append("svg")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 
-var data.string = "target.region=\'" + target + "\'&comparison.region.set=c(\'" + comparison.join('\\\',\\\'') + "\')&event.date=\'" + date +"\'"
-console.log(data.string)
+var datastring = "target.region=\'" + target + "\'&comparison.region.set=c(\\\'" + comparison.join('\\\',\\\'') + "\\\')&event.date=\'" + date +"\'"
+console.log(datastring)
 d3.json('http://ec2-54-234-196-121.compute-1.amazonaws.com/ocpu/library/rlines/R/diffindiff/json/') 
 .header("Content-Type", "application/x-www-form-urlencoded")
 // need to set content type as form encoded
-.post(data.string, function(error, data) {
+.post(datastring, function(error, data) {
 	data.forEach(function(d) {
 	  d.MonthDate = parseDate(d.MonthDate);
 	  d.target = +d.target;
@@ -153,3 +153,12 @@ console.log(data)
       .attr("d", line2);
 });
 };
+$("#clicker").bind("click", function(){
+var date = $("#diffdate").val();
+var comparison = $("#id_comparison").val();
+var target = $("#id_target").val();
+console.log(date);
+console.log(comparison);
+console.log(target);
+plot(target, comparison, date)
+});
