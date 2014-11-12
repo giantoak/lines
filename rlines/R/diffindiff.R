@@ -21,8 +21,12 @@ diffindiff<-function(target.region, comparison.region.set, event.date){
   #target.change<-mean(data[data$group == "target" & data$post,'counts']) - mean(data[data$group == "target" & data$post == FALSE,'counts'])
   comparison.change<-coef(model)[1] + coef(model)[4] 
   #comparison.change<-mean(data[data$group == "comparison" & data$post,'counts']) - mean(data[data$group == "comparison" & data$post == FALSE,'counts'])
-  
-  return(list(data=data, 
+  comparison<-data[data$group == "comparison",c('MonthDate','counts')]
+  comparison$MonthDate <- strftime(comparison$MonthDate,"%Y-%m-%d")
+  target<-data[data$group == "target",c('MonthDate','counts')]
+  target$MonthDate <- strftime(target$MonthDate,"%Y-%m-%d")
+  return(list(comparison=comparison,
+              target=target,
               #model=model, 
               diff.in.diff=dd, 
               target.diff=target.change, 

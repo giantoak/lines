@@ -102,24 +102,31 @@ var svg = d3.select("body").append("svg")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 
-var datastring = "target.region=\'" + target + "\'&comparison.region.set=c(\\\'" + comparison.join('\\\',\\\'') + "\\\')&event.date=\'" + date +"\'"
+var datastring = "target.region=\'" + target + "\'&comparison.region.set=c(\'" + comparison.join('\',\'') + "\')&event.date=\'" + date +"\'"
 console.log(datastring)
-d3.json('http://ec2-54-234-196-121.compute-1.amazonaws.com/ocpu/library/rlines/R/diffindiff/json/') 
+d3.json('http://ec2-54-235-4-161.compute-1.amazonaws.com/ocpu/library/rlines/R/diffindiff/json/') 
 .header("Content-Type", "application/x-www-form-urlencoded")
 // need to set content type as form encoded
-.post(datastring, function(error, data) {
-	data.forEach(function(d) {
-	  d.MonthDate = parseDate(d.MonthDate);
-	  d.target = +d.target;
-	  d.comparison = +d.comparison;
+.post(datastring, function(error, result) {
+console.log(result)
+var comparison = result.comparison
+var target = result.target
+	comparison.forEach(function(d) {
+	  d.MonthDate = parseDateInput(d.MonthDate);
+	  d.counts = +d.counts;
+	});
+	target.forEach(function(d) {
+	  d.MonthDate = parseDateInput(d.MonthDate);
+	  d.counts = +d.counts;
 	});
 // Parse the input JSON data as months
-console.log(data)
 console.log("About to do svg")
-x = x.domain(d3.extent(data, function(d){ return d.MonthDate;}));
+console.log(target)
+x = x.domain(d3.extent(target, function(d){ return d.MonthDate;}));
+var alldata = target.concat(comparison)
 console.log(x)
-var maxY = d3.max(data, function(d) { return Math.max(d.target, d.comparison); });  
-var minY = d3.min(data, function(d) { return Math.min(d.target, d.comparison); });  
+var maxY = d3.max(alldata, function(d) { return d.counts; });  
+var minY = d3.min(alldata, function(d) { return d.counts; });  
 y = y.domain([minY, maxY]);
 //y = y.domain(d3.extent(data, function(d){ return d.target;}));
 //yt = y.domain(d3.extent(data, function(d){ return d.target;}));
@@ -140,15 +147,15 @@ y = y.domain([minY, maxY]);
       .style("text-anchor", "end")
       .text("Ad Count");
 
-console.log(data)
+console.log(target)
   svg.append("path")
-      .datum(data)
+      .datum(target)
       .attr("class", "line")
       .attr("d", line);
 
-console.log(data)
+console.log(comparison)
   svg.append("path")
-      .datum(data)
+      .datum(comparison)
       .attr("class", "line2")
       .attr("d", line2);
 });
