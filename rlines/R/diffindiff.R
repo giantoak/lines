@@ -23,7 +23,7 @@ diffindiff<-function(target.region, comparison.region.set, event.date){
   #comparison.change<-mean(data[data$group == "comparison" & data$post,'counts']) - mean(data[data$group == "comparison" & data$post == FALSE,'counts'])
   
   return(list(data=data, 
-              model=model, 
+              #model=model, 
               diff.in.diff=dd, 
               target.diff=target.change, 
               comparison.diff=comparison.change))
