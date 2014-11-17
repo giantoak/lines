@@ -1001,10 +1001,6 @@ d3Chart.render();
                   return new Date(a.DateTime).getTime() - new Date(b.DateTime).getTime()
 
                   });
-                  console.log(es[Object.keys(es)[key]])
-                    console.log('about to make a graph')
-                    console.log(Object.keys(es)[key])
-                    console.log(es['data'])
                 
                 d3Chart.addGraph({id: Object.keys(es)[key], type: 'analog', name: Object.keys(es)[key], dataId: 515, yVal: ['Comparison', 'Target'], data: es[Object.keys(es)[key]] });
                 //Note: This is the call that happens if nothing is actually selected
