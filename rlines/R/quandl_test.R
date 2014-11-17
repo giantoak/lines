@@ -14,7 +14,8 @@ quandl_test<-function(start_date='2012-01-01', end_date=''){
   mytimeseries <- Quandl("GOOG/NYSE_IBM", type="ts", start_date=start_date, end_date=end_date)
   df<-as.data.frame(mytimeseries[,'Close'])
   df$DateTime<-rownames(df)
-  names(df) <- c('Value', 'DateTime')
+  names(df) <- c('Comparison', 'DateTime')
+  df$Target <- df$Comparison - 10
   return(list(
     raw=df,
     seasonal=df,
