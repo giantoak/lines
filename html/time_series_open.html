@@ -191,8 +191,10 @@ function custom_sort(a,b){
 var es=[];
 
 
-var query_url='http://ec2-54-235-4-161.compute-1.amazonaws.com/ocpu/library/rlines/R/quandl_test/quandl_test/json/'
-$.getJSON(query_url+'?start_date="2010-3-3"&end_date="2014-6-25"',function(response){
+var query_url='http://ec2-54-235-4-161.compute-1.amazonaws.com/ocpu/library/rlines/R/quandl_test/json/?start_date="2010-3-3"&end_date="2014-6-25"';
+var postdata = 'start_date="2010-3-3"&end_date="2014-6-25"';
+console.log(query_url)
+$.post(query_url,postdata, function(response){
   es=response;
 
 console.log(es)
@@ -307,7 +309,7 @@ d3Chart.render();
 
         });
 
-});
+}, 'json');
 
 
 
