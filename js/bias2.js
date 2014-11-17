@@ -122,8 +122,12 @@ var target = result.target
 // Parse the input JSON data as months
 console.log("About to do svg")
 console.log(target)
+console.log('logging  x object with without domain')
+console.log(x)
+console.log(d3.extent(target, function(d){ return d.MonthDate;}));
 x = x.domain(d3.extent(target, function(d){ return d.MonthDate;}));
 var alldata = target.concat(comparison)
+console.log('logging  x object with domain')
 console.log(x)
 var maxY = d3.max(alldata, function(d) { return d.counts; });  
 var minY = d3.min(alldata, function(d) { return d.counts; });  
@@ -148,11 +152,14 @@ y = y.domain([minY, maxY]);
       .text("Ad Count");
 
 console.log(target)
+console.log('line object')
+console.log(line)
   svg.append("path")
       .datum(target)
       .attr("class", "line")
       .attr("d", line);
 
+console.log(line)
 console.log(comparison)
   svg.append("path")
       .datum(comparison)
