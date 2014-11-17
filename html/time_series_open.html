@@ -122,7 +122,7 @@ div.tooltip {
 Select Target Geography:
 <div class="btn-group">
 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-<select class="form-control" id="id_comparison" name="comparison" multiple>
+<select class="form-control" id="id_target" name="target" multiple>
 <option value="dc">dc</option>
 <option value="baltimore">baltimore</option>
 <option value="abilene">abilene</option>
@@ -877,6 +877,7 @@ Select Comparison Geography:
 Event Date:
 <input id='diffdate' type="date" max="2014-06-01" min="2013-09-01" value="2014-01-01"/>
 <a class="external" data-toggle="modal" href="" data-target="#myModal"><span class="glyphicon glyphicon-info-sign"></span></a>
+<p><button id="clicker">Click me</button>
 
 
 
@@ -901,8 +902,6 @@ Event Date:
 <br>
 <br>
 <script type="text/javascript">
-
-
 
 
 $('a.external').on('click', function(e) {
@@ -939,14 +938,21 @@ function custom_sort(a,b){
   return new Date(a.DateTime)-new Date(b.DateTime);
 };
  
-
+function plot_diffs(){
+var date = $("#diffdate").val();
+var comparison = $("#id_comparison").val();
+var target = $("#id_target").val();
+console.log(date)
+console.log(comparison)
+console.log(target)
 var es=[];
 
 
 <!--var query_url='http://ec2-54-235-4-161.compute-1.amazonaws.com/ocpu/library/rlines/R/quandl_test/json/';-->
 var postdata = 'start_date="2010-3-3"&end_date="2014-6-25"';
 var query_url='http://ec2-54-235-4-161.compute-1.amazonaws.com/ocpu/library/rlines/R/diffindiff/json/';
-var postdata = 'target.region="nova"&comparison.region.set=c("dc","baltimore")&event.date="2014-01-01"';
+<!--var postdata = 'target.region="nova"&comparison.region.set=c("dc","baltimore")&event.date="2014-01-01"';-->
+var postdata = "target.region=\'" + target + "\'&comparison.region.set=c(\'" + comparison.join('\',\'') + "\')&event.date=\'" + date +"\'"
 console.log(query_url)
 $.post(query_url,postdata, function(response){
   es=response;
@@ -1030,6 +1036,13 @@ d3Chart.render();
 
 }, 'json');
 
+};
+$('#clicker').click(function(){
+        plot_diffs();
+        });
+
+
+plot_diffs()
 
 
 </script>
