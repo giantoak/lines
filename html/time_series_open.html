@@ -203,7 +203,7 @@ console.log(es)
  $(function () {
 
             requirejs.config({
-                "baseUrl": "./",
+                "baseUrl": "../js/",
                 "paths": {
                     "app": "./",
                     'moment': 'http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.2.1/moment.min',
@@ -276,6 +276,7 @@ d3Chart.render();
                
                 $("g.graph").remove();
                 
+                console.log(es)
                 for(var key in Object.keys(es)){
                   es[Object.keys(es)[key]].sort(function(a,b){
                   return new Date(a.DateTime).getTime() - new Date(b.DateTime).getTime()
