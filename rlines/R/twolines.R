@@ -9,10 +9,10 @@
 twolines<-function(target.region, comparison.region.set){
 
   output<-counts[counts$region == target.region,c('MonthDate','counts')]
-  names(output)<-c('MonthDate','target')
+  names(output)<-c('MonthDate','Target')
   comparison<-counts[counts$region %in% comparison.region.set,c('MonthDate','counts')]
   comparison<-ddply(comparison, .(MonthDate), function(x) {sum(x$counts)})
-  names(comparison)<-c('MonthDate','comparison')
+  names(comparison)<-c('MonthDate','Comparison')
   output<-merge(output,comparison)
   return(output)
 }

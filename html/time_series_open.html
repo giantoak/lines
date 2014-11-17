@@ -185,13 +185,14 @@ function custom_sort(a,b){
 var es=[];
 
 
-var query_url='http://ec2-54-235-4-161.compute-1.amazonaws.com/ocpu/library/rlines/R/quandl_test/json/?start_date="2010-3-3"&end_date="2014-6-25"';
+<!--var query_url='http://ec2-54-235-4-161.compute-1.amazonaws.com/ocpu/library/rlines/R/quandl_test/json/';-->
 var postdata = 'start_date="2010-3-3"&end_date="2014-6-25"';
+var query_url='http://ec2-54-235-4-161.compute-1.amazonaws.com/ocpu/library/rlines/R/diffindiff/json/';
+var postdata = 'target.region="nova"&comparison.region.set=c("dc","baltimore")&event.date="2014-01-01"';
 console.log(query_url)
 $.post(query_url,postdata, function(response){
   es=response;
 
-console.log(es)
 
 
  $(function () {
@@ -272,19 +273,26 @@ d3Chart.render();
                
                 $("g.graph").remove();
                 
-                console.log(es)
-                for(var key in Object.keys(es)){
+                <!--for(var key in Object.keys(es)){-->
+                for(var key in ['data']){
+                    console.log('about to be in graph loop')
+                        console.log(es)
+                  <!--es[Object.keys(es)[key]].sort(function(a,b){-->
                   es[Object.keys(es)[key]].sort(function(a,b){
                   return new Date(a.DateTime).getTime() - new Date(b.DateTime).getTime()
 
                   });
+                  console.log(es[Object.keys(es)[key]])
+                    console.log('about to make a graph')
+                    console.log(Object.keys(es)[key])
+                    console.log(es['data'])
                 
                 d3Chart.addGraph({id: Object.keys(es)[key], type: 'analog', name: Object.keys(es)[key], dataId: 515, yVal: ['Comparison', 'Target'], data: es[Object.keys(es)[key]] });
                 //Note: This is the call that happens if nothing is actually selected
                 }
 
                
-                d3Chart.reorderGraph('raw','up')
+                <!--d3Chart.reorderGraph('raw','up')-->
                 //d3Chart.addGraph({ id: 'DI', type: 'digital', name: 'Digital Input', dataId: 522, data: diData });
          //       d3Chart.addGraph({ id: 'Accel', type: 'analog', name: 'Accel', dataId: 522, yVal: ['X', 'Y', 'Z'], data: accelData });
                 d3Chart.render();

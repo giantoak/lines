@@ -10,6 +10,7 @@
 diffindiff<-function(target.region, comparison.region.set, event.date){
   data=twolines(target.region=target.region, comparison.region.set=comparison.region.set)
   data$DateTime<-as.Date(data$MonthDate, "%Y-%m-%d")
+  data$MonthDate <-NULL
  
   ed<-as.Date(event.date, "%Y-%m-%d")
   data$post = data$DateTime > ed
@@ -21,11 +22,13 @@ diffindiff<-function(target.region, comparison.region.set, event.date){
   #target.change<-mean(data[data$group == "target" & data$post,'counts']) - mean(data[data$group == "target" & data$post == FALSE,'counts'])
   comparison.change<-coef(model)[1] + coef(model)[4] 
   #comparison.change<-mean(data[data$group == "comparison" & data$post,'counts']) - mean(data[data$group == "comparison" & data$post == FALSE,'counts'])
-  comparison<-data[data$group == "comparison",c('DateTime','counts')]
+  comparison<-data[data$group == "Comparison",c('DateTime','counts')]
   comparison$DateTime <- strftime(comparison$DateTime,"%Y-%m-%d")
-  target<-data[data$group == "target",c('DateTime','counts')]
+  target<-data[data$group == "Target",c('DateTime','counts')]
   target$DateTime <- strftime(target$DateTime,"%Y-%m-%d")
-  return(list(comparison=comparison,
+  data<-reshape2::dcast(data=data, formula=DateTime~group, value=counts)
+  return(list(data=data,
+              comparison=comparison,
               target=target,
               #model=model, 
               diff.in.diff=dd, 
