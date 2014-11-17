@@ -4,7 +4,8 @@ Title: What the package does (short line)
 Version: 1.0
 Imports:
     plyr,
-    reshape2
+    reshape2,
+    Quandl
 Date: 2014-11-10
 Author: Jeffrey Borowitz <jeffrey.borowitz@giantoak.com>
 Maintainer: Jeffrey Borowitz <jeffrey.borowitz@giantoak.com>

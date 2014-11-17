@@ -1,3 +1,4 @@
 import(plyr)
 import(reshape2)
+import(Quandl)
 exportPattern("^[[:alpha:]]+")

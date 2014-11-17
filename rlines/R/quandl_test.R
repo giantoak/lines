@@ -10,8 +10,8 @@ quandl_test<-function(start_date='2012-01-01', end_date=''){
     # There is no end_date given, so let's use today
     end_date = strftime(Sys.Date(),'%Y-%m-%d')
   }
-  print(end_date)
   Quandl.auth('a4r7bmyM6Yqs6xqVgxZ4')
   mytimeseries = Quandl("GOOG/NYSE_IBM", type="ts", start_date=start_date, end_date=end_date)
-  return(mytimeseries) 
+  
+  return(as.data.frame(mytimeseries[,'Close']))
 }
