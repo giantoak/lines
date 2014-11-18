@@ -34,38 +34,43 @@ $(document).ready(function() {
     function plot_diff(){
         $("#fake_users2").empty()
 
+            var verbose=false;
 var eventdate = $("#diffdate").val();
 var comparison = $("#id_comparison").val();
 var target = $("#id_target").val();
+if (verbose){
 console.log(eventdate)
 console.log(comparison)
 console.log(target)
+}
 var postdata = 'start_date="2010-3-3"&end_date="2014-6-25"';
 var query_url='http://ec2-54-235-4-161.compute-1.amazonaws.com/ocpu/library/rlines/R/diffindiff/json/';
 var postdata = 'target.region="nova"&comparison.region.set=c("dc","baltimore")&event.date="2014-01-01"';
-var postdata = "target.region=\'" + target + "\'&comparison.region.set=c(\'" + comparison.join('\',\'') + "\')&event.date=\'" + eventdate +"\'"
-    console.log(comparison)
+var postdata = "target.region=\'" + target + "\'&comparison.region.set=c(\'" + comparison.join('\',\'') + "\')&event.date=\'" + eventdate +"\'&logged=TRUE"
+if (verbose){
+    console.log('OpenCPU Service URL:' + query_url)
+    console.log('POST data: ' + postdata)
+}
     var comparisons = comparison
     comparisons.forEach(function(d){ capitalize(d)})
     //Note: this currently isn't working to capitalize comparison locations
     var target_legend = capitalize(target)
     var comparison_legend = 'Comparison (' + comparisons.join(', ')  + ')'
-            console.log(target_legend)
-            console.log(comparison_legend)
     d3.json(query_url)
     .header("Content-Type", "application/x-www-form-urlencoded")
     .post(postdata, function(error, result) {
-        console.log(result)
         var data = [result.target, result.comparison]
     //, function(data) {
         for(var i=0;i<data.length;i++) {
             data[i] = convert_dates(data[i], 'date');
         }
-    console.log(data)
 
         var alldata = result.data
         alldata = convert_dates(alldata, 'date')
-        console.log(alldata)
+        if (verbose){
+            console.log('Converted data to plot:')
+            console.log(alldata)
+        }
 
         ////add a multi-line chart
         //data_graphic({
@@ -84,7 +89,10 @@ var postdata = "target.region=\'" + target + "\'&comparison.region.set=c(\'" + c
             'date': new Date(eventdate),
             'label': 'Event Date'
         }];
-    console.log(markers)
+        if (verbose){
+            console.log('Markers to print on graph:')
+            console.log(markers)
+        }
 
         data_graphic({
             title:"Difference in Differences Plot",
