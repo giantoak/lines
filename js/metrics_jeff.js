@@ -82,7 +82,7 @@ var postdata = "target.region=\'" + target + "\'&comparison.region.set=c(\'" + c
         //});
         var markers = [{
             'date': new Date(eventdate),
-            'label': 'Something Happened!'
+            'label': 'Event Date'
         }];
     console.log(markers)
 
@@ -92,7 +92,7 @@ var postdata = "target.region=\'" + target + "\'&comparison.region.set=c(\'" + c
             data: alldata,
             legend: [comparison_legend, target_legend],
             legend_target: '#jeff_legend',
-            width: torso.width,
+            width: torso.width*2,
             height: torso.height,
             interpolate: 'linear',
             right: torso.right,
@@ -283,4 +283,5 @@ var postdata = "target.region=\'" + target + "\'&comparison.region.set=c(\'" + c
 
         }, 'xml');
     })
+plot_diff()
 })
