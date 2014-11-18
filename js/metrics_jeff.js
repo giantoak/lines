@@ -34,19 +34,24 @@ $(document).ready(function() {
     function plot_diff(){
         $("#fake_users2").empty()
 
-            var verbose=false;
+            var verbose=true;
 var eventdate = $("#diffdate").val();
 var comparison = $("#id_comparison").val();
 var target = $("#id_target").val();
+var uselogs = $('#logged').is(':checked');
 if (verbose){
 console.log(eventdate)
 console.log(comparison)
 console.log(target)
+console.log('Checkbox value: ' + uselogs)
 }
 var postdata = 'start_date="2010-3-3"&end_date="2014-6-25"';
 var query_url='http://ec2-54-235-4-161.compute-1.amazonaws.com/ocpu/library/rlines/R/diffindiff/json/';
 var postdata = 'target.region="nova"&comparison.region.set=c("dc","baltimore")&event.date="2014-01-01"';
-var postdata = "target.region=\'" + target + "\'&comparison.region.set=c(\'" + comparison.join('\',\'') + "\')&event.date=\'" + eventdate +"\'&logged=TRUE"
+var postdata = "target.region=\'" + target + "\'&comparison.region.set=c(\'" + comparison.join('\',\'') + "\')&event.date=\'" + eventdate +"\'"
+if (uselogs){
+    postdata = postdata + "&logged=TRUE"
+}
 if (verbose){
     console.log('OpenCPU Service URL:' + query_url)
     console.log('POST data: ' + postdata)
@@ -150,6 +155,7 @@ if (verbose){
 
 
     function assignEventListeners() {
+
         $('#clicker').click(function () {
             plot_diff()
 
