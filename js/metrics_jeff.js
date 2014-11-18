@@ -64,6 +64,11 @@ if (verbose){
     d3.json(query_url)
     .header("Content-Type", "application/x-www-form-urlencoded")
     .post(postdata, function(error, result) {
+        if (verbose){
+            console.log('Result object from server:')
+            console.log(result)
+        }
+
         var data = [result.target, result.comparison]
     //, function(data) {
         for(var i=0;i<data.length;i++) {
@@ -117,38 +122,36 @@ if (verbose){
             y_accessor: ['Comparison', 'Target'],
         });
 
-        ////add a wide multi-line chart
-        //data_graphic({
-            //title:"Multi-Line Chart Wide",
-            //description: "This line chart contains multiple lines and has extended ticks enabled.",
-            //area: false,
-            //legend: ['Line 3','Line 2','Line 1'],
-            //legend_target: '.legend',
-            //data: data,
-            //width: torso.width*2,
-            //height: torso.height,
-            //right: trunk.right,
-            //show_years: false,
-            //xax_tick: 0,
-            //y_extended_ticks: true,
-            //target: '#fake_users3',
-            //x_accessor: 'date',
-            //y_accessor: 'value'
-        //})
+        // Begin printing dd results
+        //
+        var dd_table = $('<table/>', {id:'dd_table', class:'table table-striped'});
+        console.log(dd_table)
+        $('<tr/>', {id:'header_row'})
+        .append('<td><b>Estimate</b></td>')
+        .append('<td><b>Value</b></td>')
+        .append('<td><b>Standard Error</b></td>')
+        .appendTo(dd_table);
+        // Add a header row
 
-        ////linked multi-line charts
-        //data_graphic({
-            //title:"Multi-Line Linked",
-            //description: "Demoing linked multi-line charts.",
-            //data: data,
-            //width: torso.width,
-            //height: torso.height,
-            //right: torso.right,
-            //target: '#linked_multi1',
-            //linked: true,
-            //x_accessor: 'date',
-            //y_accessor: 'counts'
-        //});
+        $('<tr/>')
+        .append('<td>Diff-in-Diff Effect</td>')
+        .append('<td>' + result.diff_in_diff.b[0]+ '</td>')
+        .append('<td>' + result.diff_in_diff.se[0]+ '</td>').appendTo(dd_table);
+
+        $('<tr/>')
+        .append('<td>Target Difference</td>')
+        .append('<td>' + result.target_diff.b[0]+ '</td>')
+        .append('<td>' + result.target_diff.se[0]+ '</td>').appendTo(dd_table);
+
+        $('<tr/>')
+        .append('<td>Comparison Difference</td>')
+        .append('<td>' + result.comparison_diff.b[0]+ '</td>')
+        .append('<td>' + result.comparison_diff.se[0]+ '</td>').appendTo(dd_table);
+        var dd_results = $('#dd_results')
+        dd_results.empty()
+        $('#dd_results').append(dd_table)
+        //dd_table.appendTo($('#dd_results'))
+
 
     });
     };
