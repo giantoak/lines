@@ -27,129 +27,19 @@ $(document).ready(function() {
     assignEventListeners();
 
 
-    //few observations
-    //d3.json('../metrics-graphics-1.0.0/data/missing-y.json', function(data) {
-        //data = convert_dates(data, 'date');
+    function plot_diff(){
+        $("#fake_users2").empty()
 
-        ////add a line chart that has a few observations
-        //data_graphic({
-            //title: "Few Observations",
-            //description: "We sometimes have only a few observations. By setting <i>missing_is_zero: true</i>, missing values for a time-series will be interpreted as zeros. In this example, we've overridden the rollover callback to show 'no date' for missing observations and have set the <i>min_x</i> and <i>max_x</i> options in order to expand the date range.",
-            //data: data,
-            //interpolate: 'basic',
-            //missing_is_zero: true,
-            //width: torso.width,
-            //height: torso.height,
-            //right: torso.right,
-            //min_x: new Date('2014-01-01'),
-            //max_x: new Date('2014-06-01'),
-            //target: '#missing-y',
-            //x_accessor: 'date',
-            //y_accessor: 'value',
-            //rollover_callback: function(d, i) {
-                //var df = d3.time.format('%b %d, %Y');
-                //var date = df(d['date']);
-                //var y_val = (d.value == 0) ? 'no data' : d.value;
-
-                //$('#missing-y svg .active_datapoint')
-                    //.html(date +  '   ' + y_val);
-            //}
-        //})
-    //});
-
-    //d3.json('data/small-range.json', function(data) {
-        //data = convert_dates(data, 'date');
-
-        ////small range
-        //data_graphic({
-            //title: "Small Range of Integers",
-            //description: "When we have a data object of integers and a small range of values, the auto-generated set of y-axis ticks are filtered so that we don't include fractional values.",
-            //data: data,
-            //interpolate: 'basic',
-            //width: torso.width,
-            //height: torso.height,
-            //right: torso.right,
-            //target: '#small-range',
-            //x_accessor: 'date',
-            //y_accessor: 'value'
-        //})
-    //});
-
-    //d3.json('data/fake_users1.json', function(data) {
-        //data = convert_dates(data, 'date');
-
-        //var fake_baselines = [{value:160000000, label:'a baseline'}]
-
-        ////add a line chart
-        //data_graphic({
-            //title: "Line Chart",
-            //description: "This is a simple line chart. You can remove the area portion by adding <i>area: false</i> to the arguments list.",
-            //data: data,
-            //width: torso.width,
-            //height: torso.height,
-            //right: torso.right,
-            //baselines: fake_baselines,
-            //target: '#fake_users1',
-            //x_accessor: 'date',
-            //y_accessor: 'value'
-        //})
-
-        //data_graphic({
-            //title: "No X Axis",
-            //description: "Here is an example hiding the x axis.",
-            //data: data,
-            //decimals: 0,
-            //width: trunk.width,
-            //height: trunk.height,
-            //right: trunk.right,
-            //xax_count: 4,
-            //target: '#hidden1',
-            //x_accessor: 'date',
-            //y_accessor: 'value',
-            //area: false,
-            //x_axis: false,
-            //small_text: true
-        //})
-
-        //var markers = [{
-            //'date': new Date('2014-03-17T00:00:00.000Z'),
-            //'label': 'Look, a spike!'
-        //}];
-
-        ////add a chart with annotations
-        //data_graphic({
-            //title: "Annotations",
-            //description: "By setting the graphic's target a class name of main-area-solid, markers don't extend down to the bottom of the graphic, which better draws attention to, say, spikes.",
-            //data: data,
-            //width: torso.width,
-            //height: torso.height,
-            //right: torso.right,
-            //markers: markers,
-            //target: '#spike',
-            //x_accessor: 'date',
-            //y_accessor: 'value'
-        //});
-
-        //data_graphic({
-            //title: "Another Least Squares Example",
-            //description: "Least squares effortlessly works with dates or times on axes.",
-            //data: data,
-            //chart_type: 'point',
-            //width: trunk.width,
-            //height: trunk.height*1.5,
-            //left: 60,
-            //right: trunk.right,
-            //least_squares: true,
-            //target: '#sls-time-series',
-            //x_accessor: 'date',
-            //y_accessor: 'value'
-        //});
-    //})
-
+var date = $("#diffdate").val();
+var comparison = $("#id_comparison").val();
+var target = $("#id_target").val();
+console.log(date)
+console.log(comparison)
+console.log(target)
 var postdata = 'start_date="2010-3-3"&end_date="2014-6-25"';
 var query_url='http://ec2-54-235-4-161.compute-1.amazonaws.com/ocpu/library/rlines/R/diffindiff/json/';
 var postdata = 'target.region="nova"&comparison.region.set=c("dc","baltimore")&event.date="2014-01-01"';
-//var postdata = "target.region=\'" + target + "\'&comparison.region.set=c(\'" + comparison.join('\',\'') + "\')&event.date=\'" + date +"\'"
+var postdata = "target.region=\'" + target + "\'&comparison.region.set=c(\'" + comparison.join('\',\'') + "\')&event.date=\'" + date +"\'"
     d3.json(query_url)
     .header("Content-Type", "application/x-www-form-urlencoded")
     .post(postdata, function(error, result) {
@@ -241,26 +131,20 @@ var postdata = 'target.region="nova"&comparison.region.set=c("dc","baltimore")&e
                 }
             }
         }
-        //data_graphic({
-            //title:"Handling Different Sized Lines in a Single Array",
-            //description: "How do you handle data with multiple implied time series lengths?",
-            //data: all_the_data,
-            //width: torso.width*2,
-            //height: torso.height,
-            //right: torso.right,
-            //target: '#missing1',
-            //linked: true,
-            //y_extended_ticks: true,
-            //x_accessor: 'date',
-            //y_accessor: ['counts', 'counts']
-        //});
 
 
 
-    })
+    });
+    };
 
 
     function assignEventListeners() {
+        $('#clicker').click(function () {
+            plot_diff()
+
+
+            return false;
+        })
         $('#dark-css').click(function () {
             $('.missing')
                 .css('background-image', 'url(images/missing-data-dark.png)');
