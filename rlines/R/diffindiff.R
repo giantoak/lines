@@ -41,9 +41,9 @@ diffindiff<-function(target.region, comparison.region.set, event.date, logged=FA
   b.comparison<-comparison.vec %*% model.results[,'Estimate']
   se.comparison<-sqrt(comparison.vec %*% vcov.matrix %*% comparison.vec)
   comparison.change<-list(
-    b=b.comparison,
-    se=se.comparison,
-    t=b.comparison/se.comparison
+    b=b.comparison[1,1],
+    se=se.comparison[1,1],
+    t=b.comparison[1,1]/se.comparison[1,1]
     )
   
   #comparison.change<-mean(data[data$group == "comparison" & data$post,'counts']) - mean(data[data$group == "comparison" & data$post == FALSE,'counts'])
@@ -56,7 +56,7 @@ diffindiff<-function(target.region, comparison.region.set, event.date, logged=FA
               comparison=comparison,
               target=target,
               #model=model, 
-              diff.in.diff=dd, 
-              target.diff=target.change, 
-              comparison.diff=comparison.change))
+              diff_in_diff=dd, 
+              target_diff=target.change, 
+              comparison_diff=comparison.change))
 }
