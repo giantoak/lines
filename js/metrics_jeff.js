@@ -24,6 +24,10 @@ $(document).ready(function() {
     small.top = 20;
     small.xax_count = 5;
 
+    function capitalize(s)
+    {
+            return s && s[0].toUpperCase() + s.slice(1);
+    }
     assignEventListeners();
 
 
@@ -40,6 +44,14 @@ var postdata = 'start_date="2010-3-3"&end_date="2014-6-25"';
 var query_url='http://ec2-54-235-4-161.compute-1.amazonaws.com/ocpu/library/rlines/R/diffindiff/json/';
 var postdata = 'target.region="nova"&comparison.region.set=c("dc","baltimore")&event.date="2014-01-01"';
 var postdata = "target.region=\'" + target + "\'&comparison.region.set=c(\'" + comparison.join('\',\'') + "\')&event.date=\'" + date +"\'"
+    console.log(comparison)
+    var comparisons = comparison
+    console.log(comparison)
+    comparisons.forEach(function(d){ capitalize(d)})
+    var target_legend = capitalize(target)
+    var comparison_legend = 'Comparison (' + comparisons.join(', ')  + ')'
+            console.log(target_legend)
+            console.log(comparison_legend)
     d3.json(query_url)
     .header("Content-Type", "application/x-www-form-urlencoded")
     .post(postdata, function(error, result) {
@@ -55,24 +67,26 @@ var postdata = "target.region=\'" + target + "\'&comparison.region.set=c(\'" + c
         alldata = convert_dates(alldata, 'date')
         console.log(alldata)
 
-        //add a multi-line chart
-        data_graphic({
-            title:"Multi-Line Chart",
-            description: "This line chart contains multiple lines.",
-            data: data,
-            width: torso.width,
-            height: torso.height,
-            right: torso.right,
-            interpolate: 'linear',
-            target: '#fake_users2',
-            x_accessor: 'date',
-            y_accessor: 'counts'
-        });
+        ////add a multi-line chart
+        //data_graphic({
+            //title:"Multi-Line Chart",
+            //description: "This line chart contains multiple lines.",
+            //data: data,
+            //width: torso.width,
+            //height: torso.height,
+            //right: torso.right,
+            //interpolate: 'linear',
+            //target: '#fake_users2',
+            //x_accessor: 'date',
+            //y_accessor: 'counts'
+        //});
 
         data_graphic({
             title:"Handling Different Sized Lines in a Single Array",
             description: "How do you handle data with multiple implied time series lengths?",
             data: alldata,
+            legend: [comparison_legend, target_legend],
+            legend_target: '#fake_users2_legend',
             width: torso.width*2,
             height: torso.height,
             interpolate: 'linear',
@@ -84,24 +98,24 @@ var postdata = "target.region=\'" + target + "\'&comparison.region.set=c(\'" + c
             y_accessor: ['Comparison', 'Target']
         });
 
-        //add a wide multi-line chart
-        data_graphic({
-            title:"Multi-Line Chart Wide",
-            description: "This line chart contains multiple lines and has extended ticks enabled.",
-            area: false,
-            legend: ['Line 3','Line 2','Line 1'],
-            legend_target: '.legend',
-            data: data,
-            width: torso.width*2,
-            height: torso.height,
-            right: trunk.right,
-            show_years: false,
-            xax_tick: 0,
-            y_extended_ticks: true,
-            target: '#fake_users3',
-            x_accessor: 'date',
-            y_accessor: 'value'
-        })
+        ////add a wide multi-line chart
+        //data_graphic({
+            //title:"Multi-Line Chart Wide",
+            //description: "This line chart contains multiple lines and has extended ticks enabled.",
+            //area: false,
+            //legend: ['Line 3','Line 2','Line 1'],
+            //legend_target: '.legend',
+            //data: data,
+            //width: torso.width*2,
+            //height: torso.height,
+            //right: trunk.right,
+            //show_years: false,
+            //xax_tick: 0,
+            //y_extended_ticks: true,
+            //target: '#fake_users3',
+            //x_accessor: 'date',
+            //y_accessor: 'value'
+        //})
 
         //linked multi-line charts
         data_graphic({
