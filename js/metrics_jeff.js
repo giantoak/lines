@@ -34,20 +34,20 @@ $(document).ready(function() {
     function plot_diff(){
         $("#fake_users2").empty()
 
-var date = $("#diffdate").val();
+var eventdate = $("#diffdate").val();
 var comparison = $("#id_comparison").val();
 var target = $("#id_target").val();
-console.log(date)
+console.log(eventdate)
 console.log(comparison)
 console.log(target)
 var postdata = 'start_date="2010-3-3"&end_date="2014-6-25"';
 var query_url='http://ec2-54-235-4-161.compute-1.amazonaws.com/ocpu/library/rlines/R/diffindiff/json/';
 var postdata = 'target.region="nova"&comparison.region.set=c("dc","baltimore")&event.date="2014-01-01"';
-var postdata = "target.region=\'" + target + "\'&comparison.region.set=c(\'" + comparison.join('\',\'') + "\')&event.date=\'" + date +"\'"
+var postdata = "target.region=\'" + target + "\'&comparison.region.set=c(\'" + comparison.join('\',\'') + "\')&event.date=\'" + eventdate +"\'"
     console.log(comparison)
     var comparisons = comparison
-    console.log(comparison)
     comparisons.forEach(function(d){ capitalize(d)})
+    //Note: this currently isn't working to capitalize comparison locations
     var target_legend = capitalize(target)
     var comparison_legend = 'Comparison (' + comparisons.join(', ')  + ')'
             console.log(target_legend)
@@ -80,22 +80,28 @@ var postdata = "target.region=\'" + target + "\'&comparison.region.set=c(\'" + c
             //x_accessor: 'date',
             //y_accessor: 'counts'
         //});
+        var markers = [{
+            'date': new Date(eventdate),
+            'label': 'Something Happened!'
+        }];
+    console.log(markers)
 
         data_graphic({
-            title:"Handling Different Sized Lines in a Single Array",
+            title:"Difference in Differences Plot",
             description: "How do you handle data with multiple implied time series lengths?",
             data: alldata,
             legend: [comparison_legend, target_legend],
-            legend_target: '#fake_users2_legend',
-            width: torso.width*2,
+            legend_target: '#jeff_legend',
+            width: torso.width,
             height: torso.height,
             interpolate: 'linear',
             right: torso.right,
-            target: '#missing1',
-            linked: true,
+            target: '#fake_users2',
+            //linked: true,
+            markers: markers,
             y_extended_ticks: true,
             x_accessor: 'date',
-            y_accessor: ['Comparison', 'Target']
+            y_accessor: ['Comparison', 'Target'],
         });
 
         ////add a wide multi-line chart
@@ -117,36 +123,19 @@ var postdata = "target.region=\'" + target + "\'&comparison.region.set=c(\'" + c
             //y_accessor: 'value'
         //})
 
-        //linked multi-line charts
-        data_graphic({
-            title:"Multi-Line Linked",
-            description: "Demoing linked multi-line charts.",
-            data: data,
-            width: torso.width,
-            height: torso.height,
-            right: torso.right,
-            target: '#linked_multi1',
-            linked: true,
-            x_accessor: 'date',
-            y_accessor: 'counts'
-        });
-
-        // missing data in one of a multi-line chart.
-        var all_the_data = clone(data[0]);
-        for (var i = 1; i < data.length; i ++){
-            for (var j=0; j < data[i].length; j++){
-                if (i==2 && all_the_data[j]['date'] < new Date('2014-02-01')){
-                    // pass
-                } else if (i==1 && all_the_data[j]['date'] > new Date('2014-03-22')) {
-                    // pass
-                } else {
-                    all_the_data[j]['value'+(i+1)] = data[i][j].value;    
-
-                }
-            }
-        }
-
-
+        ////linked multi-line charts
+        //data_graphic({
+            //title:"Multi-Line Linked",
+            //description: "Demoing linked multi-line charts.",
+            //data: data,
+            //width: torso.width,
+            //height: torso.height,
+            //right: torso.right,
+            //target: '#linked_multi1',
+            //linked: true,
+            //x_accessor: 'date',
+            //y_accessor: 'counts'
+        //});
 
     });
     };
