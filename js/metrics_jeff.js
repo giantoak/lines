@@ -38,7 +38,7 @@ $(document).ready(function() {
 
         var target = $("#id_target").val();
         var comparison = $("#id_comparison").val();
-        var query_url='http://ec2-54-235-4-161.compute-1.amazonaws.com/ocpu/library/rlines/R/get_features/json/';
+        var query_url='http://ec2-54-147-242-201.compute-1.amazonaws.com/ocpu/library/rlines/R/get_features/json/';
         var postdata = "target.region=\'" + target + "\'"
         if (verbose){
             console.log(comparison)
@@ -50,6 +50,56 @@ $(document).ready(function() {
         .header("Content-Type", "application/x-www-form-urlencoded")
         .post(postdata, function(error, result) {
             console.log(result)
+            $('#comparison').parent().removeClass('explanation-hidden').addClass('explanation')
+            var comparison_div = $('#comparison')
+            comparison_div.empty()
+
+            var comparison_table = $('<table/>', {id:'comparison_table', class:'table table-striped'});
+            console.log(comparison_table)
+            $('<tr/>', {id:'header_row'})
+            .append('<td><b>Region</b></td>')
+            .append('<td><b>Completeness</b></td>')
+            .append('<td><b>Population</b></td>')
+            .append('<td><b>Ad Counts</b></td>')
+            .append('<td><b>Match Score</b></td>')
+            .appendTo(comparison_table);
+            // Add a header row
+
+            $('<tr/>', {id:'main_row'})
+            .append('<td><b>' + result[0]['region'] + '</b></td>')
+            .append('<td><b>' + result[0]['completeness'] + '</b></td>')
+            .append('<td><b>' + result[0]['b01001001'] + '</b></td>')
+            .append('<td><b>' + result[0]['counts'] + '</b></td>')
+            .append('<td><b>--</b></td>')
+            .appendTo(comparison_table);
+            // Add a header row
+
+            var column_order = ['region','completeness','b01001001','counts','score']
+                for (var i = 1; i < result.length; i++) { 
+                    // Note: start at row 1, after we do the first row
+                    // separately since that's the target
+                    var row_data = $('<tr/>')
+                    for (var col = 0; col < column_order.length; col++) { 
+                        console.log(i)
+                        row_data.append('<td>' + result[i][column_order[col]] + '</td>');
+                    }
+                    row_data.appendTo(comparison_table);
+                }
+            comparison_table.appendTo(comparison_div)
+
+            $('select[id=id_comparison] >option:selected').removeAttr("selected");
+            for (var i = 1; i < result.length; i++){
+                if (verbose){
+                    console.log('region is: ' + result[i]['region'])
+                    console.log('select[id=id_comparison] >option[value=' + result[i]['region'] + ']')
+                }
+                $('select[id=id_comparison] >option[value=' + result[i]['region'] + ']').attr('selected','selected')
+            }
+            // Remove the selected comparison groups
+            //$('<tr/>')
+            //.append('<td>Diff-in-Diff Effect</td>')
+            //.append('<td>' + result.diff_in_diff.b[0]+ '</td>')
+            //.append('<td>' + result.diff_in_diff.se[0]+ '</td>').appendTo(comparison_table);
         })
     }
     
@@ -68,7 +118,7 @@ console.log(target)
 console.log('Checkbox value: ' + uselogs)
 }
 var postdata = 'start_date="2010-3-3"&end_date="2014-6-25"';
-var query_url='http://ec2-54-235-4-161.compute-1.amazonaws.com/ocpu/library/rlines/R/diffindiff/json/';
+var query_url='http://ec2-54-147-242-201.compute-1.amazonaws.com/ocpu/library/rlines/R/diffindiff/json/';
 var postdata = 'target.region="nova"&comparison.region.set=c("dc","baltimore")&event.date="2014-01-01"';
 var postdata = "target.region=\'" + target + "\'&comparison.region.set=c(\'" + comparison.join('\',\'') + "\')&event.date=\'" + eventdate +"\'"
 if (uselogs){

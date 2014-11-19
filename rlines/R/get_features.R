@@ -12,8 +12,11 @@ get_features<-function(target.region, num.matches=4){
   data$target <- data$region == target.region # Create a binary 1 for the region we care about
   match<-matchit(target ~ completeness + b01001001 + counts, data=data)
   data$score <- match$distance
+  target.row <- data[data$target,]
+  data<-data[!data$target,]
   data<-data[order(data$score, decreasing=TRUE),]
   data<-data[1:num.matches,]
+  data<-rbind(target.row,data)
   data<-subset(data, select=-c(target))
   return(data)
 }
