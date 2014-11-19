@@ -92,7 +92,7 @@
                         <div id='dd_results'></div>
                     </div>
                     <div class='col-lg-8'>
-                        <div id='dd_text' class="explanation-hidden">
+                        <div class="dd_text explanation-hidden">
                         The interpretation of the difference in difference
                         estimator is...
                         <br>
@@ -114,7 +114,21 @@
 
                     </div>
                     </div>
-                    <br>
+                </div>
+                <div class='row trunk-section explanation-hidden'>
+                    <div class='col-lg-4' id="comparison">
+                    </div>
+                    <div class='col-lg-8'>
+                        <div class="dd_text">
+                            This comparison is generated using a logistic
+                            matching model based on features including
+                            overall counts, population, and a composite
+                            measure of the ease of extracting information
+                            from profiles. The locations most similar to
+                            the listed location are shown.
+                        </div>
+                        <br>
+                    </div>
                 </div>
                 <div class='row trunk-section'>
                     <div class='col-lg-4'>
@@ -884,9 +898,13 @@ Event Date:
 <p>
 Use Logs:
 <input id='logged' type="checkbox"/>
-<a class="external" data-toggle="modal" href="" data-target="#myModal"><span class="glyphicon glyphicon-info-sign"></span></a>
-<p>
 <button id="clicker">Perform</button>
+<br>
+<h3>Generate Comparison:</h3>
+Clicking "Get Comparison Groups" will generate an automatic synthetic
+comparison group based on a number of features.
+<button id="comparison_button">Get Comparison Groups</button>
+<p>
                     </div>
                 </div>
 

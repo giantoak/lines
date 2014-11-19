@@ -1,6 +1,9 @@
 'use strict';
 
 $(document).ready(function() {
+    var verbose=true;
+    // whether to print verbose debugging commands
+    
     //json data that we intend to update later on via on-screen controls
     var split_by_data;
     
@@ -31,10 +34,29 @@ $(document).ready(function() {
     assignEventListeners();
 
 
+    function get_comparisons(){
+
+        var target = $("#id_target").val();
+        var comparison = $("#id_comparison").val();
+        var query_url='http://ec2-54-235-4-161.compute-1.amazonaws.com/ocpu/library/rlines/R/get_features/json/';
+        var postdata = "target.region=\'" + target + "\'"
+        if (verbose){
+            console.log(comparison)
+                console.log(target)
+                console.log('OpenCPU Service URL:' + query_url)
+                console.log('POST data: ' + postdata)
+        }
+        d3.json(query_url)
+        .header("Content-Type", "application/x-www-form-urlencoded")
+        .post(postdata, function(error, result) {
+            console.log(result)
+        })
+    }
+    
+
     function plot_diff(){
         $("#fake_users2").empty()
 
-            var verbose=true;
 var eventdate = $("#diffdate").val();
 var comparison = $("#id_comparison").val();
 var target = $("#id_target").val();
@@ -152,13 +174,17 @@ if (verbose){
         $('#dd_results').append(dd_table)
         //dd_table.appendTo($('#dd_results'))
 
-        $("#dd_text").removeClass('explanation-hidden').addClass('explanation')
+        $(".dd_text").removeClass('explanation-hidden').addClass('explanation')
 
     });
     };
 
 
     function assignEventListeners() {
+        $('#comparison_button').click(function () {
+            get_comparisons()
+            return false;
+        })
 
         $('#clicker').click(function () {
             plot_diff()
