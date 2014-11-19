@@ -152,6 +152,7 @@ if (verbose){
         $('#dd_results').append(dd_table)
         //dd_table.appendTo($('#dd_results'))
 
+        $("#dd_text").removeClass('explanation-hidden').addClass('explanation')
 
     });
     };
@@ -161,8 +162,6 @@ if (verbose){
 
         $('#clicker').click(function () {
             plot_diff()
-
-
             return false;
         })
         $('#dark-css').click(function () {
