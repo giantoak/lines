@@ -4,3 +4,6 @@
 .explanation{
     display: inline;
 }
+.control-label{
+    display: inline-block;
+}
