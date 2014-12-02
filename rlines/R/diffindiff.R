@@ -20,8 +20,14 @@ diffindiff<-function(target.region, comparison.region.set, event.date, logged=FA
   if (logged){
     data$counts<-log(1+data$counts)
   }
+  data <- within(data, group <- relevel(group, ref = "Comparison")) # Set comparison as base group
   model<-lm(counts ~ post*group, data=data)
   print(summary(model))
+  # The idea for this model is for the results to be in the order:
+  #  1: (Intercept)           
+  #  2: postTRUE            
+  #  3: groupTarget         
+  #  4: postTRUE:groupTarget
   model.results<-coef(summary(model))
   vcov.matrix<-vcov(model)
   dd<-list(
@@ -29,14 +35,24 @@ diffindiff<-function(target.region, comparison.region.set, event.date, logged=FA
     se=model.results[4, "Std. Error"],
     t=model.results[4,"t value"] 
   )
-  # The diff-in-diff estimate
-  target.change<-
-    list(
-      b=model.results[1,'Estimate'], 
-      se=model.results[1, "Std. Error"],
-      t=model.results[1,"t value"]
-    )# The pre-post difference in the target variable
-  comparison.vec<-c(1,0,0,1)
+  # The diff-in-diff estimate is just 4: postTRUE:groupTarget
+#  target.change<-
+#    list(
+#      b=model.results[1,'Estimate'], 
+#      se=model.results[1, "Std. Error"],
+#      t=model.results[1,"t value"]
+#    )# The pre-post difference in the target variable
+  target.change.vec<-c(0,1,0,1)
+  # The target change is the sum of the 2nd and 4th variables (set target=True and change post from 1 to 0)
+  b.target<-target.change.vec %*% model.results[,'Estimate']
+  se.target<-sqrt(target.change.vec %*% vcov.matrix %*% target.change.vec)
+  target.change<-list(
+    b=b.target[1,1],
+    se=se.target[1,1],
+    t=b.target[1,1]/se.target[1,1]
+    )
+  
+  comparison.vec<-c(0,1,0,0)
   # The comparison group is the sum of the 1st and 4th variables
   b.comparison<-comparison.vec %*% model.results[,'Estimate']
   se.comparison<-sqrt(comparison.vec %*% vcov.matrix %*% comparison.vec)
@@ -44,8 +60,7 @@ diffindiff<-function(target.region, comparison.region.set, event.date, logged=FA
     b=b.comparison[1,1],
     se=se.comparison[1,1],
     t=b.comparison[1,1]/se.comparison[1,1]
-    )
-  
+  )
   #comparison.change<-mean(data[data$group == "comparison" & data$post,'counts']) - mean(data[data$group == "comparison" & data$post == FALSE,'counts'])
   comparison<-data[data$group == "Comparison",c('date','counts')]
   comparison$date <- strftime(comparison$date,"%Y-%m-%d")
