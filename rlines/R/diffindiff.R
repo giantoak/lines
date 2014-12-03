@@ -22,7 +22,10 @@ diffindiff<-function(target.region, comparison.region.set, event.date, logged=FA
   }
   data <- within(data, group <- relevel(group, ref = "Comparison")) # Set comparison as base group
   model<-lm(counts ~ post*group, data=data)
+  msum<-summary(model)
+  df<-msum$df[2]
   print(summary(model))
+  
   # The idea for this model is for the results to be in the order:
   #  1: (Intercept)           
   #  2: postTRUE            
@@ -33,8 +36,9 @@ diffindiff<-function(target.region, comparison.region.set, event.date, logged=FA
   dd<-list(
     b=model.results[4,'Estimate'], 
     se=model.results[4, "Std. Error"],
-    t=model.results[4,"t value"] 
+    t=model.results[4,"t value"]
   )
+  dd$p<-2*pt(-abs(dd$t),df=df-1)
   # The diff-in-diff estimate is just 4: postTRUE:groupTarget
 #  target.change<-
 #    list(
@@ -51,6 +55,9 @@ diffindiff<-function(target.region, comparison.region.set, event.date, logged=FA
     se=se.target[1,1],
     t=b.target[1,1]/se.target[1,1]
     )
+  target.change$p<-2*pt(-abs(target.change$t),df=df-1)
+  # Note: we have to compute p manually since non-unit vectors will have covariance terms in SE
+  # and hence won't be in the main results
   
   comparison.vec<-c(0,1,0,0)
   # The comparison group is the sum of the 1st and 4th variables
@@ -61,7 +68,10 @@ diffindiff<-function(target.region, comparison.region.set, event.date, logged=FA
     se=se.comparison[1,1],
     t=b.comparison[1,1]/se.comparison[1,1]
   )
-  #comparison.change<-mean(data[data$group == "comparison" & data$post,'counts']) - mean(data[data$group == "comparison" & data$post == FALSE,'counts'])
+  comparison.change$p<-2*pt(-abs(comparison.change$t),df=df-1)
+  # Note: we have to compute p manually since non-unit vectors will have covariance terms in SE
+  # and hence won't be in the main results
+#comparison.change<-mean(data[data$group == "comparison" & data$post,'counts']) - mean(data[data$group == "comparison" & data$post == FALSE,'counts'])
   comparison<-data[data$group == "Comparison",c('date','counts')]
   comparison$date <- strftime(comparison$date,"%Y-%m-%d")
   target<-data[data$group == "Target",c('date','counts')]
