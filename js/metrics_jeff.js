@@ -202,23 +202,44 @@ if (verbose){
         .append('<td><b>Estimate</b></td>')
         .append('<td><b>Value</b></td>')
         .append('<td><b>Standard Error</b></td>')
+        .append('<td><b>Statistically Significant?</b></td>')
         .appendTo(dd_table);
         // Add a header row
 
+        var temp_significance = ''
+        if (result.diff_in_diff.p[0] < .025){
+            temp_significance = "Yes"
+        }
+        else{
+            temp_significance = "No"
+        }
         $('<tr/>')
         .append('<td>Diff-in-Diff Effect</td>')
         .append('<td>' + result.diff_in_diff.b[0]+ '</td>')
-        .append('<td>' + result.diff_in_diff.se[0]+ '</td>').appendTo(dd_table);
+        .append('<td>' + result.diff_in_diff.se[0]+ '</td>')
+        .append('<td>' + temp_significance + '</td>')
+        .appendTo(dd_table);
 
+        var temp_significance = ''
+        if (result.target_diff.p[0] < .025){
+            temp_significance = "Yes"
+        }
+        else{
+            temp_significance = "No"
+        }
         $('<tr/>')
         .append('<td>Target Difference</td>')
         .append('<td>' + result.target_diff.b[0]+ '</td>')
-        .append('<td>' + result.target_diff.se[0]+ '</td>').appendTo(dd_table);
+        .append('<td>' + result.target_diff.se[0]+ '</td>')
+        .append('<td>' + temp_significance + '</td>').appendTo(dd_table);
 
         $('<tr/>')
         .append('<td>Comparison Difference</td>')
         .append('<td>' + result.comparison_diff.b[0]+ '</td>')
-        .append('<td>' + result.comparison_diff.se[0]+ '</td>').appendTo(dd_table);
+        .append('<td>' + result.comparison_diff.se[0]+ '</td>')
+        .append('<td>' + temp_significance + '</td>')
+        .appendTo(dd_table);
+
         var dd_results = $('#dd_results')
         dd_results.empty()
         $('#dd_results').append(dd_table)
