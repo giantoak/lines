@@ -9,17 +9,20 @@
 
 
 
-diffindiff_data<-function(target.region, comparison.region.set, event.date, logged=FALSE, input_data, date.var="date", post.var="post", group.var="group", var.of.interest="counts"){
-  data<-twolines_data(target.region=target.region, comparison.region.set=comparison.region.set, data=input_data)
-  data$date<-as.Date(data$MonthDate, "%Y-%m-%d")
-  data$MonthDate <-NULL
+diffindiff_data<-function(target.region, comparison.region.set, event.date, logged=FALSE, input_data, date.var="MonthDate", group.var="group", var.of.interest="counts"){
+  post.var<-"post" # Set the variable name for 'post'
+  local.date.var<-"date"
+  region.var<-'region'
+  data<-twolines_data(target.region=target.region, comparison.region.set=comparison.region.set, data=input_data, date.var=date.var, group.var=group.var, region.var=region.var, var.of.interest=var.of.interest)
+  data[local.date.var]<-as.Date(data[[date.var]], "%Y-%m-%d")
+  data[date.var] <-NULL
   
   ed<-as.Date(event.date, "%Y-%m-%d")
   
-  data$post = data$date > ed
-  data<-melt(data, id=c(date.var,post.var), variable.name=group.var, value.name=var.of.interest)
+  data[post.var] = data[[local.date.var]] > ed
+  data<-melt(data, id=c(local.date.var,post.var), variable.name=group.var, value.name=var.of.interest)
   if (logged){
-    data$counts<-log(1+data$counts)
+    data[var.of.interest]<-log(1+data[var.of.interest])
   }
   data <- within(data, group <- relevel(group, ref = "Comparison")) # Set comparison as base group
   #form1<-as.formula(paste(var.of.interest," ~ ", post.var, "*", group.var))
@@ -75,11 +78,11 @@ diffindiff_data<-function(target.region, comparison.region.set, event.date, logg
   # Note: we have to compute p manually since non-unit vectors will have covariance terms in SE
   # and hence won't be in the main results
 #comparison.change<-mean(data[data$group == "comparison" & data$post,'counts']) - mean(data[data$group == "comparison" & data$post == FALSE,'counts'])
-  comparison<-data[data$group == "Comparison",c('date','counts')]
-  comparison$date <- strftime(comparison$date,"%Y-%m-%d")
-  target<-data[data$group == "Target",c('date','counts')]
-  target$date <- strftime(target$date,"%Y-%m-%d")
-  data<-reshape2::dcast(data=data, formula=paste(date.var,'~',group.var), value=eval(parse(text=var.of.interest)))
+  comparison<-data[data[group.var] == "Comparison",c(local.date.var,var.of.interest)]
+  comparison[local.date.var] <- strftime(comparison[[local.date.var]],"%Y-%m-%d")
+  target<-data[data[group.var] == "Target",c(local.date.var,var.of.interest)]
+  target[local.date.var] <- strftime(target[[local.date.var]],"%Y-%m-%d")
+  data<-reshape2::dcast(data=data, formula=paste(local.date.var,'~',group.var), value=eval(parse(text=var.of.interest)))
   return(list(data=data,
               comparison=comparison,
               target=target,
