@@ -7,13 +7,18 @@
 #' - features as columns
 #' - score as a final column measuring similarity
 
-get_features_data<-function(target.region, num.matches=4,data=''){
+get_features_data<-function(target.region='dc', num.matches=4,data=''){
   if (data == ''){
     stop('No data given')
   #data<-region.features[,c('completeness','b01001001','counts','region')] # Select columns to use
   #data$target <- data$region == target.region # Create a binary 1 for the region we care about
   
   }
+  data<-region.features[,c('completeness','b01001001','counts','region')] # Select columns to use
+  data$target <- data$region == target.region # Create a binary 1 for the region we care about
+  #print(data)
+  #return(target.region)
+  #return(data)
   match<-matchit(target ~ completeness + b01001001 + counts, data=data)
   data$score <- match$distance
   target.row <- data[data$target,]
