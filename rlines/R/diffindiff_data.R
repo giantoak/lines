@@ -9,7 +9,7 @@
 
 
 
-diffindiff_data<-function(target.region, comparison.region.set, event.date, logged=FALSE, input_data){
+diffindiff_data<-function(target.region, comparison.region.set, event.date, logged=FALSE, input_data, date.var="date", post.var="post", group.var="group", var.of.interest="counts"){
   data<-twolines_data(target.region=target.region, comparison.region.set=comparison.region.set, data=input_data)
   data$date<-as.Date(data$MonthDate, "%Y-%m-%d")
   data$MonthDate <-NULL
@@ -17,12 +17,14 @@ diffindiff_data<-function(target.region, comparison.region.set, event.date, logg
   ed<-as.Date(event.date, "%Y-%m-%d")
   
   data$post = data$date > ed
-  data<-melt(data, id=c("date","post"), variable.name="group", value.name="counts")
+  data<-melt(data, id=c(date.var,post.var), variable.name=group.var, value.name=var.of.interest)
   if (logged){
     data$counts<-log(1+data$counts)
   }
   data <- within(data, group <- relevel(group, ref = "Comparison")) # Set comparison as base group
-  model<-lm(counts ~ post*group, data=data)
+  #form1<-as.formula(paste(var.of.interest," ~ ", post.var, "*", group.var))
+  form<-paste(var.of.interest," ~ ", post.var, "*", group.var)
+  model<-lm(formula=form, data=data)
   msum<-summary(model)
   df<-msum$df[2]
   print(summary(model))
@@ -77,7 +79,7 @@ diffindiff_data<-function(target.region, comparison.region.set, event.date, logg
   comparison$date <- strftime(comparison$date,"%Y-%m-%d")
   target<-data[data$group == "Target",c('date','counts')]
   target$date <- strftime(target$date,"%Y-%m-%d")
-  data<-reshape2::dcast(data=data, formula=date~group, value=counts)
+  data<-reshape2::dcast(data=data, formula=paste(date.var,'~',group.var), value=eval(parse(text=var.of.interest)))
   return(list(data=data,
               comparison=comparison,
               target=target,
