@@ -6,16 +6,16 @@ import ipdb
 # These tests are based off of the existing data in the rlines package
 # from openads
 class ocpu_wrapper():
-    baseurl = 'http://localhost'
-    def __init__(self, url, header={}, files={}):
+    def __init__(self, url, baseurl = 'http://localhost', header={}, files={}):
         if 'http' in url:
             self.url=url
         else:
             self.url=self.baseurl + url
-        self.result = None
+        self.baseurl = baseurl
         self.header = header
         self.files = files
-        self.session_id = None
+        #self.result = None
+        #self.session_id = None
     def perform(self):
         self.result = requests.post(self.url, files=self.files, headers=self.header)
         # perform the initial search
