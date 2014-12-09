@@ -15,8 +15,9 @@ class ocpu_wrapper():
         self.header = header
         self.files = files
         self.data = data
-        #self.result = None
-        #self.session_id = None
+        self.result = None
+        self.session_id = None
+        self.endpoints = None
     def perform(self):
         print('Calling %s' % self.url)
         self.result = requests.post(self.url, files=self.files, headers=self.header, data=self.data)
@@ -66,6 +67,43 @@ def get_from_val(session,endpoint='/ocpu/tmp/'):
     r.raise_for_status()
     #api.perform()
     return r.json()
+
+def list_to_r_array(input_list):
+    """
+    Function that puts python lists into R argument strings
+    """
+    if not len(input_list):
+        raise Exception('No items in input list')
+    if type(input_list[0]) == int or type(input_list[0]) == float:
+        return 'c(%s)' % ','.join(map(str,input_list))
+        # Just put numbers right in the array
+    if type(input_list[0]) == str:
+        return 'c(%s)' % ','.join(map(lambda x: '"%s"' % x,input_list))
+
+def dict_to_r_args(input_dict):
+    output_args = []
+    for k, v in input_dict.iteritems():
+        if type(v) == str:
+            output_args.append( '%s="%s"' % (k, v))
+        elif type(v) == int:
+            output_args.append( '%s=%s' % (k, v))
+        elif type(v) == bool:
+            if v:
+                output_args.append( '%s=TRUE' % k)
+            else:
+                output_args.append( '%s=FALSE' % k)
+        elif type(v) == list:
+            output_args.append('%s=%s' % (k, list_to_r_array(v)))
+        #else:
+            #try:
+        elif isinstance(v,ocpu_wrapper):
+                #ipdb.set_trace()
+            output_args.append('%s=%s' % (k, v.get_result_pointer()))
+            #except:
+        else:
+            raise Exception('Unknown argument type for %s: %s' % (str(v), type(v)))
+    return '&'.join(output_args)
+
 
 #if __name__ == '__main__':
     #unittest.main()
