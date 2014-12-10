@@ -125,24 +125,34 @@ console.log(target)
 console.log('Checkbox value: ' + uselogs)
 }
 var postdata = 'start_date="2010-3-3"&end_date="2014-6-25"';
-var query_url='http://ec2-54-147-242-201.compute-1.amazonaws.com/ocpu/library/rlines/R/diffindiff/json/';
+//var query_url='http://ec2-54-147-242-201.compute-1.amazonaws.com/ocpu/library/rlines/R/diffindiff/json/';
+var query_url="{% url 'diffindiff' %}" 
 var postdata = 'target.region="nova"&comparison.region.set=c("dc","baltimore")&event.date="2014-01-01"';
 var postdata = "target.region=\'" + target + "\'&comparison.region.set=c(\'" + comparison.join('\',\'') + "\')&event.date=\'" + eventdate +"\'"
+var postdata = {
+    targetRegion:target,
+    comparisonRegionSet:comparison,
+    eventDate:eventdate
+}
 if (uselogs){
-    postdata = postdata + "&logged=TRUE"
+    //postdata = postdata + "&logged=TRUE"
+    postdata.logged=true
 }
 if (verbose){
     console.log('OpenCPU Service URL:' + query_url)
-    console.log('POST data: ' + postdata)
+    console.log('POST data: ' + JSON.stringify(postdata))
 }
     var comparisons = comparison
     comparisons.forEach(function(d){ capitalize(d)})
     //Note: this currently isn't working to capitalize comparison locations
     var target_legend = capitalize(target)
     var comparison_legend = 'Comparison (' + comparisons.join(', ')  + ')'
+    var csrf = $("input[name='csrfmiddlewaretoken']").attr('value');
     d3.json(query_url)
-    .header("Content-Type", "application/x-www-form-urlencoded")
-    .post(postdata, function(error, result) {
+    //.header("Content-Type", "application/x-www-form-urlencoded")
+    .header("Content-Type", "application/json")
+    .header("X-CSRFToken", csrf)
+    .post(JSON.stringify(postdata), function(error, result) {
         if (verbose){
             console.log('Result object from server:')
             console.log(result)

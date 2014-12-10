@@ -8,5 +8,6 @@ urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'tempus_web.views.home', name='home'),
     url(r'^internal/get_comparisons/', views.get_comparison, name='get_comparison'),
+    url(r'^internal/diffindiff/', views.diffindiff, name='diffindiff'),
     url(r'^home/', views.home, name='home'),
 )
