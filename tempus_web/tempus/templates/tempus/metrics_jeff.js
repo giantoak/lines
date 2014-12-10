@@ -41,19 +41,21 @@ $(document).ready(function() {
         var target = $("#id_target").val();
         var comparison = $("#id_comparison").val();
         var query_url="{% url 'get_comparison' %}" 
-        var postdata = "target.region=\'" + target + "\'"
+        var postdata = {targetRegion:target}
+        console.log(postdata)
         if (verbose){
             console.log(comparison)
                 console.log(target)
                 console.log('OpenCPU Service URL:' + query_url)
-                console.log('POST data: ' + postdata)
+                console.log('POST data: ' + JSON.stringify(postdata))
         }
         var csrf = $("input[name='csrfmiddlewaretoken']").attr('value');
         console.log(csrf)
         d3.json(query_url)
-        .header("Content-Type", "application/x-www-form-urlencoded")
+        //.header("Content-Type", "application/x-www-form-urlencoded")
+        .header("Content-Type", "application/json")
         .header("X-CSRFToken", csrf)
-        .post(postdata, function(error, result) {
+        .post(JSON.stringify(postdata), function(error, result) {
             console.log(result)
             $('#comparison').parent().removeClass('explanation-hidden').addClass('explanation')
             var comparison_div = $('#comparison')
