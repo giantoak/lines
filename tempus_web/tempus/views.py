@@ -1,9 +1,11 @@
 from django.shortcuts import render
-from django.template import RequestContext, loader  
+from django.template import RequestContext, loader
 from django.conf import settings
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
+from django.core.urlresolvers import reverse_lazy
 from tempus.helpers import ocpu_wrapper
 from tempus.helpers import dict_to_r_args
+from tempus.forms import TimeSeriesFileForm
 import datetime
 import json
 import ipdb
@@ -13,6 +15,18 @@ def home(request):
     output = {} # No data here
     context = RequestContext(request, output)
     return HttpResponse( template.render(context))
+
+def upload(request):
+    if request.method == 'POST':
+        # We have a file, so save it
+        form = TimeSeriesFileForm(request.POST, request.FILES)
+        batch = form.save()
+        return HttpResponseRedirect(reverse_lazy('upload_home'))
+    else:
+        output = {'form':TimeSeriesFileForm()}
+        template = loader.get_template('tempus/metrics_jeff_upload.js')
+        context = RequestContext(request, output)
+        return HttpResponse( template.render(context))
 
 def get_comparison(request):
     start = datetime.datetime.now()
@@ -58,4 +72,9 @@ def diffindiff(request):
     print('Main query performed in %s' % str(datetime.datetime.now() - start))
 
     return HttpResponse(json.dumps(d.get_result_object()),mimetype='application/json')
+
+def save_ts_csv(request):
+    form = TimeSeriesFileForm(request.POST, request.FILES)
+    ipdb.set_trace()
+
 
