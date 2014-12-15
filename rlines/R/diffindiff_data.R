@@ -5,6 +5,9 @@
 #' @param event.date: a YYYY-MM-DD date string for the actual event date
 #' @param logged: A boolean as to whether to perform a log transform on the data first
 #' @param input_data: The dataframe to use for diff-in-diff - needs to have 
+#' @param date.var: String name for the date variable in the input_data dataframe.
+#' @param group.var:  String name for the group (i.e. city name) variable in the input_data dataframe
+#' @param var.of.interest: String name for the variable of interest (e.g. ad counts) in the input_data dataframe
 #' @return A list with dd, main_diff, comparison_diff, pre, and post values
 
 
