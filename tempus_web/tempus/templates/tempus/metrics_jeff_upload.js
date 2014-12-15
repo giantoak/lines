@@ -339,6 +339,10 @@ if (verbose){
             })
         })
 
+        $('td[id^=file_]').click(function(){
+            console.log('clicked!!!!!!!!')
+        })
+
         $('.modify-time-period-controls button').click(function() {
             var past_n_days = $(this).data('time_period');            
             var data = modify_time_period(split_by_data, past_n_days);

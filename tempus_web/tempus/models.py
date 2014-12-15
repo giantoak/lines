@@ -13,6 +13,7 @@ class TimeSeriesFile(models.Model):
     created_date = models.DateTimeField(auto_now_add=True,
              default=datetime.datetime.now())
     r_session_id = None # The session id for the loaded variable
+    r_session = None # The actual session object for the loaded variable
     file = models.FileField(upload_to='files/%s' % datetime.datetime.strftime(datetime.datetime.now(),'%s'), blank=True, null=True, max_length=40)
 
     def load(self):
@@ -23,4 +24,5 @@ class TimeSeriesFile(models.Model):
         d = ocpu_wrapper(url='http://localhost/ocpu/library/rlines/R/store_csv/',  files=files)
         d.perform()
         self.r_session_id = d.session_id
+        self.r_session = d
 
