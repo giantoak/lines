@@ -1,0 +1,84 @@
+{% load staticfiles %}
+<html lang='en'>
+<head>
+{% csrf_token %}
+<meta content='text/html; charset=utf-8' http-equiv='Content-Type'>
+<meta property='og:title' content='Lines' />
+<meta property='og:description' content='Lines is a library designed to
+let analysts quickly and easily explore time series by choosing
+sensible comparisons and doing smart things without hard work or
+specialized computing knowledge.' />
+<meta property='og:image' content='http://www.giantoak.com/wp-content/themes/giantoak/images/logo.png' />
+<meta property='og:type' content='website' />
+<meta property='og:url' content='http://www.giantoak.com/' />
+
+<link href='http://www.giantoak.com/wp-content/themes/giantoak/images/logo.png' rel='icon' type='image/png' />
+
+<title>Giant Oak Lines</title>
+
+<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,700' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=PT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
+<link href='https://netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.css' rel='stylesheet' type='text/css'>
+<link href='https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css' rel='stylesheet' type='text/css'>
+
+<link href="{% static "tempus/metrics-graphics-1.0.0/css/metricsgraphics.css" %}" rel='stylesheet' type='text/css' id='light'>
+<link href='' rel='stylesheet' type='text/css' id='dark'>
+<link href="{% static "tempus/metrics-graphics-1.0.0/css/metricsgraphics-demo.css" %}" rel='stylesheet' type='text/css' id='light'>
+<link href="{% static "tempus/css/jeff.css" %}" rel='stylesheet' type='text/css'>
+
+<script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/d3/3.4.11/d3.min.js' charset='utf-8'></script>
+<script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js'></script>
+<script src="{% static "tempus/metrics-graphics-1.0.0/js/metricsgraphics.min.js" %}"></script>
+<!--<script src="{% static "tempus/js/metrics_jeff.js" %}"></script>-->
+<script>
+{% block js  %}{% endblock %}  
+
+</script>
+
+</head>
+
+<body>
+<div id='container' class='container'>
+    <div id='content-body'>
+        <div class='head'>
+            <!--<ul>-->
+            <!--<li><a href='http://metricsgraphicsjs.org/'>Home</a></li>-->
+            <!--<li><a href='https://github.com/mozilla/metrics-graphics/releases'>Download</a></li>-->
+            <!--<li><a href='interactive-demo.htm'>Interactive</a></li>-->
+            <!--<li><a href='https://github.com/mozilla/metrics-graphics'>Code</a></li>-->
+            <!--<li><a href='https://github.com/mozilla/metrics-graphics/issues'>Issues</a></li>-->
+            <!--<li class='divider'>|</li>-->
+            <!--<li><a href='#' id='light-css' class='pill active'>Light style</a></li>-->
+            <!--<li><a href='#' id='dark-css' class='pill'>Dark style</a></li>-->
+            <!--<li class='float-right no-padding'><a class='selected examples-options' href='dev.htm'>DEV</a></li>-->
+            <!--<li class='float-right'><a class='examples-options' href='examples.htm'>RELEASE</a></li>-->
+            <!--</ul>-->
+
+            {% block head %}
+            {% endblock %}
+            <div class='row'>
+                <div class='col-lg-10'>
+                    <h2>Lines</h2>
+                    An application designed to aid with the interpretation of time
+                    series data. Lines helps users generate sane comparison groups
+                    and identify the effect of events of interest on
+                    outcomes of interest.
+                </div>
+                <div class='col-lg-2'>
+                    <img src='http://www.giantoak.com/wp-content/themes/giantoak/images/logo.png' alt="Giant Oak Logo" width="100px">
+                </div>
+            </div>
+            {% block body %}
+            <div id='trunk'>
+                <div class='row trunk-section'>
+                    <!--HTML here in a section-->
+                </div>
+            </div>
+            {% endblock %}
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

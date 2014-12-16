@@ -1,0 +1,27 @@
+{% extends 'tempus/base.html' %}
+{% block body %}
+
+<div class='row trunk-section'>
+    <div class="btn-group col-lg-5">
+        Panel Data
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+            <select class="form-control" id="panel" name="panel">
+                {% for panel in panels %}
+                <option value="{{ panel.file.name }}">{{ panel.file.name }}</option>
+                {% endfor %}
+            </select>
+        </a>
+    </div>
+    <div class="btn-group col-lg-5">
+        Features
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+            <select class="form-control" id="features" name="features">
+                {% for data in datas %}
+                <option value="{{ data.file.name }}">{{ data.file.name }}</option>
+                {% endfor %}
+            </select>
+        </a>
+    </div>
+</div>
+
+{% endblock %}

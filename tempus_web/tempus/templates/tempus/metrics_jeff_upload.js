@@ -40,7 +40,7 @@ $(document).ready(function() {
 
         var target = $("#id_target").val();
         var comparison = $("#id_comparison").val();
-        var query_url="{% url 'get_comparison_upload' %}" 
+        var query_url="{% url 'get_comparison_upload' file_id=1 %}" 
         var postdata = {targetRegion:target}
         console.log(postdata)
         if (verbose){

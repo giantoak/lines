@@ -31,9 +31,20 @@ def upload(request):
         return HttpResponseRedirect(reverse_lazy('upload_home'))
     else:
         output = {'form':TimeSeriesFileForm()}
-        template = loader.get_template('tempus/metrics_jeff_upload.js')
+        #template = loader.get_template('tempus/metrics_jeff_upload.js')
+        template = loader.get_template('tempus/upload.html')
+        #template = loader.get_template('tempus/metrics_jeff_blank.js')
         context = RequestContext(request, output)
         return HttpResponse( template.render(context))
+
+def select(request):
+    #output = {'form':TimeSeriesFileForm()}
+    output = {}
+    output['panels'] = TimeSeriesFile.objects.filter(filetype='P')
+    output['datas'] = TimeSeriesFile.objects.filter(filetype='F')
+    template = loader.get_template('tempus/select.html')
+    context = RequestContext(request, output)
+    return HttpResponse( template.render(context))
 
 def get_comparison(request):
     start = datetime.datetime.now()

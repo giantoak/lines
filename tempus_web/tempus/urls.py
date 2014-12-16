@@ -15,5 +15,6 @@ urlpatterns = patterns('',
     url(r'^internal/upload_ts/', views.save_ts_csv, name='upload_ts'),
     url(r'^home/', views.home, name='home'),
     url(r'^upload_home/', views.upload, name='upload_home'),
+    url(r'^select/', views.select, name='select'),
     url(r'^files/(?P<page>\d+)/$', CsvListView.as_view(), name='csv_list'),
     )
