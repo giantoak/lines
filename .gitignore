@@ -7,9 +7,15 @@
 # R data files from past sessions
 .Rdata
 
+# R manual files
+*.Rd
+
 # RStudio files
 .Rproj.user/
 .Rproj.user
 
 # Vim swap files
 .*.sw*
+
+# python compiled files
+*.pyc

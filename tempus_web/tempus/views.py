@@ -46,6 +46,22 @@ def select(request):
     context = RequestContext(request, output)
     return HttpResponse( template.render(context))
 
+def loaded(request, panel_id, features_id):
+    try:
+        panel = TimeSeriesFile.objects.get(id=panel_id)
+        if not panel.r_session_id:
+            panel.load()
+        features = TimeSeriesFile.objects.get(id=features_id)
+        if not features.r_session_id:
+            features.load()
+        output = {}
+        output['panels'] = panel_id
+        output['datas'] = features_id
+        template = loader.get_template('tempus/uploaded_work.html')
+        context = RequestContext(request, output)
+        return HttpResponse( template.render(context))
+    except Exception as e:
+        print('asdf')
 def get_comparison(request):
     start = datetime.datetime.now()
     if not request.META['CONTENT_TYPE'] == 'application/json':
@@ -102,6 +118,29 @@ def save_ts_csv(request):
             #f.load()
         #return HttpResponse(,mimetype='application/json')
 def get_comparison_upload(request, file_id):
+    start = datetime.datetime.now()
+    if not request.META['CONTENT_TYPE'] == 'application/json':
+        return HttpResponse(json.dumps({'Error':'JSON not received'},mimetype='application/json'))
+        # Check if we are sending JSON as the body here, and if not, error!
+        # Note. This is not necessarily the *RIGHT* way to send json in the body
+        # of an http request..
+    f = TimeSeriesFile.objects.get(id=file_id)
+    if not f.r_session_id:
+        f.load()
+    start = datetime.datetime.now()
+    input_data = json.loads(request.body)
+    data = { 'target.region':str(input_data['targetRegion']) }# Convert input data from unicode
+    header = { 'content-type': 'application/x-www-form-urlencoded' } # Set header for ocpu
+    url = url=settings.OPENCPU_ENDPOINT + 'ocpu/library/rlines/R/get_features/'
+    print('About to create ocpu object in %s' % str(datetime.datetime.now() - start))
+    d = ocpu_wrapper(url=url, data=dict_to_r_args(data), header=header)
+    print(' ocpu object created in %s' % str(datetime.datetime.now() - start))
+    d.perform()
+    print('Main query performed in %s' % str(datetime.datetime.now() - start))
+
+    return HttpResponse(json.dumps(d.get_result_object()),mimetype='application/json')
+
+def get_diffindiff_upload(request, file_id):
     """
     This is currently a toy function which takes a file ID and does the diff-in-diff call here
     """
@@ -114,27 +153,22 @@ def get_comparison_upload(request, file_id):
         ## Check if we are sending JSON as the body here, and if not, error!
         ## Note. This is not necessarily the *RIGHT* way to send json in the body
         ## of an http request..
-    #input_data = json.loads(request.body)
-    #data = {
-            #'target.region':str(input_data['targetRegion']),
-            #'comparison.region.set':[str(i) for i in input_data['comparisonRegionSet']],
-            #'event.date':str(input_data['eventDate']),
-            #'input_data':f.session,
-            #}# Convert input data from unicode
+    input_data = json.loads(request.body)
+    ipdb.set_trace()
     data = {
-            'target.region':'baltimore',
-            'comparison.region.set':['dc','nova'],
-            'event.date':'2013-10-01',
+            'target.region':str(input_data['targetRegion']),
+            'comparison.region.set':[str(i) for i in input_data['comparisonRegionSet']],
+            'event.date':str(input_data['eventDate']),
             'input_data':f.r_session,
             }# Convert input data from unicode
-    #if input_data.has_key('logged'):
-        #data['logged'] = input_data['logged']
+    if input_data.has_key('logged'):
+        data['logged'] = input_data['logged']
     header = { 'content-type': 'application/x-www-form-urlencoded' } # Set header for ocpu
     url = url=settings.OPENCPU_ENDPOINT + 'ocpu/library/rlines/R/diffindiff_data/'
     print('About to create ocpu object in %s' % str(datetime.datetime.now() - start))
     print(dict_to_r_args(data))
     d = ocpu_wrapper(url=url, data=dict_to_r_args(data), header=header)
-    print(' ocpu object created in %s' % str(datetime.datetime.now() - start))
+    print('ocpu object created in %s' % str(datetime.datetime.now() - start))
     d.perform()
     print('Main query performed in %s' % str(datetime.datetime.now() - start))
 
