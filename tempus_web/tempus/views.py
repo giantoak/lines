@@ -154,7 +154,6 @@ def get_diffindiff_upload(request, file_id):
         ## Note. This is not necessarily the *RIGHT* way to send json in the body
         ## of an http request..
     input_data = json.loads(request.body)
-    ipdb.set_trace()
     data = {
             'target.region':str(input_data['targetRegion']),
             'comparison.region.set':[str(i) for i in input_data['comparisonRegionSet']],
