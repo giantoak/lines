@@ -12,10 +12,10 @@
 
 
 
-diffindiff_data<-function(target.region, comparison.region.set, event.date, logged=FALSE, input_data, date.var="MonthDate", group.var="group", var.of.interest="counts"){
+diffindiff_data<-function(target.region, comparison.region.set, event.date, logged=FALSE, input_data, date.var="MonthDate", group.var="group", var.of.interest="counts", region.var='region'){
   post.var<-"post" # Set the variable name for 'post'
   local.date.var<-"date"
-  region.var<-'region'
+  
   data<-twolines_data(target.region=target.region, comparison.region.set=comparison.region.set, data=input_data, date.var=date.var, group.var=group.var, region.var=region.var, var.of.interest=var.of.interest)
   data[local.date.var]<-as.Date(data[[date.var]], "%Y-%m-%d")
   data[date.var] <-NULL

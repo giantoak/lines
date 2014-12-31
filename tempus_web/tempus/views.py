@@ -129,9 +129,13 @@ def get_comparison_upload(request, file_id):
         f.load()
     start = datetime.datetime.now()
     input_data = json.loads(request.body)
-    data = { 'target.region':str(input_data['targetRegion']) }# Convert input data from unicode
+    data = {
+            'target.region':str(input_data['targetRegion']) ,
+            'comparison.vars':['completeness','b01001001','counts'],
+            'input_data':f.r_session,
+            }# Convert input data from unicode
     header = { 'content-type': 'application/x-www-form-urlencoded' } # Set header for ocpu
-    url = url=settings.OPENCPU_ENDPOINT + 'ocpu/library/rlines/R/get_features/'
+    url = url=settings.OPENCPU_ENDPOINT + 'ocpu/library/rlines/R/get_features_data/'
     print('About to create ocpu object in %s' % str(datetime.datetime.now() - start))
     d = ocpu_wrapper(url=url, data=dict_to_r_args(data), header=header)
     print(' ocpu object created in %s' % str(datetime.datetime.now() - start))
