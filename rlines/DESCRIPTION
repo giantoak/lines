@@ -7,7 +7,8 @@ Imports:
     reshape2,
     Quandl,
     MASS,
-    MatchIt
+    MatchIt,
+    TSA
 Date: 2014-11-10
 Author: Jeffrey Borowitz <jeffrey.borowitz@giantoak.com>
 Maintainer: Jeffrey Borowitz <jeffrey.borowitz@giantoak.com>
