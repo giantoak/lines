@@ -62,6 +62,23 @@ def loaded(request, panel_id, features_id):
         return HttpResponse( template.render(context))
     except Exception as e:
         print('asdf')
+def log_test(request, panel_id):
+    start = datetime.datetime.now()
+    panel = TimeSeriesFile.objects.get(id=panel_id)
+    if not panel.r_session_id:
+        panel.load()
+    data = {
+            'column':'counts',
+            'df':panel.r_session
+            }
+
+    header = { 'content-type': 'application/x-www-form-urlencoded' } # Set header for ocpu
+    url=settings.OPENCPU_ENDPOINT + 'ocpu/library/rlines/R/log_diagnostic/'
+    print('About to create ocpu object in %s' % str(datetime.datetime.now() - start))
+    print(dict_to_r_args(data))
+    d = ocpu_wrapper(url=url, data=dict_to_r_args(data), header=header)
+    d.perform()
+    return HttpResponse(json.dumps(d.get_result_object()),mimetype='application/json')
 def get_comparison(request):
     start = datetime.datetime.now()
     if not request.META['CONTENT_TYPE'] == 'application/json':
@@ -97,7 +114,7 @@ def diffindiff(request):
     if input_data.has_key('logged'):
         data['logged'] = input_data['logged']
     header = { 'content-type': 'application/x-www-form-urlencoded' } # Set header for ocpu
-    url = url=settings.OPENCPU_ENDPOINT + 'ocpu/library/rlines/R/diffindiff/'
+    url=settings.OPENCPU_ENDPOINT + 'ocpu/library/rlines/R/diffindiff/'
     print('About to create ocpu object in %s' % str(datetime.datetime.now() - start))
     print(dict_to_r_args(data))
     d = ocpu_wrapper(url=url, data=dict_to_r_args(data), header=header)

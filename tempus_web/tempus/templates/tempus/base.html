@@ -30,6 +30,9 @@ specialized computing knowledge.' />
 <script src='https://cdnjs.cloudflare.com/ajax/libs/d3/3.4.11/d3.min.js' charset='utf-8'></script>
 <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js'></script>
 <script src="{% static "tempus/metrics-graphics-1.0.0/js/metricsgraphics.min.js" %}"></script>
+<script src="{% static "tempus/metrics-graphics-1.0.0/js/metricsgraphics.min.js" %}"></script>
+<script src="{% static "questionnaire/jquery.ay-questionnaire.js" %}"></script>
+<script src="{% static "questionnaire/tempus_diffindiff.js" %}"></script>
 <!--<script src="{% static "tempus/js/metrics_jeff.js" %}"></script>-->
 <script>
 {% block js  %}{% endblock %}  
@@ -72,7 +75,6 @@ specialized computing knowledge.' />
             {% block body %}
             <div id='trunk'>
                 <div class='row trunk-section'>
-                    <!--HTML here in a section-->
                 </div>
             </div>
             {% endblock %}

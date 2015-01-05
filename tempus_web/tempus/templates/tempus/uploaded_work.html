@@ -420,6 +420,73 @@ plot_diff()
 
 {% block body %}
 
+<form action="" id="questionnaire">
+    <fieldset>
+        <div class='row trunk-section'>
+            <div class="question">Do you have a clear sense of the comparison group that you'd like to?
+            </div>
+            <div class="input-group">
+                <label>
+                    <span>No</span><input type="radio" name="question[1]" value="0">
+                </label>
+                <label>
+                    <span>Yes</span><input type="radio" name="question[1]" value="1">
+                </label>
+            </div>
+        </div>
+    </fieldset>
+    <fieldset>
+        <div class='row trunk-section'>
+            <div class="question">Do you have a specific event date in mind that might have caused a change in your output?</div>
+            <div class="input-group">
+                <label>
+                    <span>No</span><input type="radio" name="question[2]" value="0">
+                </label>
+                <label>
+                    <span>Yes</span><input type="radio" name="question[2]" value="1">
+                </label>
+            </div>
+        </div>
+    </fieldset>
+    <fieldset>
+        <div class='row trunk-section'>
+            <p class="question">Did you see the Hollywood Costume collection?</p>
+            <div class="input-group">
+                <label>
+                    <span>No</span><input type="radio" name="question[3]" value="0">
+                </label>
+                <label>
+                    <span>Yes</span><input type="radio" name="question[3]" value="1">
+                </label>
+            </div>
+        </div>
+    </fieldset>
+    <fieldset>
+        <div class='row trunk-section'>
+            <p class="question">Did you see the Light From the Middle East collection?</p>
+            <div class="input-group">
+                <label>
+                    <span>No</span><input type="radio" name="question[4]" value="0">
+                </label>
+                <label>
+                    <span>Yes</span><input type="radio" name="question[4]" value="1">
+                </label>
+            </div>
+        </div>
+    </fieldset>
+    <fieldset>
+        <div class='row trunk-section'>
+            <p>Thank you for taking the survey.</p>
+        </div>
+    </fieldset>
+    <fieldset>
+        <div class='row trunk-section'>
+            <div class="question">In the future, we might use an event database such as GDELT to help select events of interest
+            </div>
+        </div>
+    </fieldset>
+</form>
+</div>
 <div class='row trunk-section'>
     <h2 class='trunk-title'>Controls</h2>
     <br>
@@ -1257,22 +1324,22 @@ plot_diff()
 <div id='linked_multi1'></div>
 <div id='linked_multi2'></div>
             </div>
-                <div class='row trunk-section'>
-<div class='col-lg-4'>
-    <h2 class='trunk-title'>Difference-in-Differences</h2>
-    The graph at right shows the number of ads posted
-    in the adult services section of backpage.com in a
-    particular month, in a particular geographical
-    location. Geographical locations come from the
-    backpage subdomain.  (That is, ads in Washington,
-    DC are all available at dc.backpage.com)
-    <div class='legend' id='jeff_legend'></div>
-</div>
-<div class='col-lg-8'>
-    <div class='col-lg-12 text-center extended-y-ticks' id='fake_users2'></div>
-</div>
-<br>
+            <div class='row trunk-section'>
+                <div class='col-lg-4'>
+                    <h2 class='trunk-title'>Difference-in-Differences</h2>
+                    The graph at right shows the number of ads posted
+                    in the adult services section of backpage.com in a
+                    particular month, in a particular geographical
+                    location. Geographical locations come from the
+                    backpage subdomain.  (That is, ads in Washington,
+                    DC are all available at dc.backpage.com)
+                    <div class='legend' id='jeff_legend'></div>
                 </div>
+                <div class='col-lg-8'>
+                    <div class='col-lg-12 text-center extended-y-ticks' id='fake_users2'></div>
+                </div>
+                <br>
+            </div>
                 <div class='row trunk-section'>
 <div class='col-lg-6'>
     <div id='dd_results'></div>
