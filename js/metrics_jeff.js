@@ -111,11 +111,13 @@ var eventdate = $("#diffdate").val();
 var comparison = $("#id_comparison").val();
 var target = $("#id_target").val();
 var uselogs = $('#logged').is(':checked');
+var normalize = $('#normalize').is(':checked');
 if (verbose){
 console.log(eventdate)
 console.log(comparison)
 console.log(target)
 console.log('Checkbox value: ' + uselogs)
+console.log('Normlized toggle value: ' + normalize)
 }
 var postdata = 'start_date="2010-3-3"&end_date="2014-6-25"';
 var query_url='http://ec2-54-147-242-201.compute-1.amazonaws.com/ocpu/library/rlines/R/diffindiff/json/';
@@ -123,6 +125,9 @@ var postdata = 'target.region="nova"&comparison.region.set=c("dc","baltimore")&e
 var postdata = "target.region=\'" + target + "\'&comparison.region.set=c(\'" + comparison.join('\',\'') + "\')&event.date=\'" + eventdate +"\'"
 if (uselogs){
     postdata = postdata + "&logged=TRUE"
+}
+if (normalize){
+    postdata = postdata + "&normalize=TRUE"
 }
 if (verbose){
     console.log('OpenCPU Service URL:' + query_url)

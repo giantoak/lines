@@ -8,7 +8,7 @@
 
 
 
-diffindiff<-function(target.region, comparison.region.set, event.date, logged=FALSE){
+diffindiff<-function(target.region, comparison.region.set, event.date, logged=FALSE, normalize=FALSE){
   data=twolines(target.region=target.region, comparison.region.set=comparison.region.set)
   data$date<-as.Date(data$MonthDate, "%Y-%m-%d")
   data$MonthDate <-NULL
@@ -19,6 +19,11 @@ diffindiff<-function(target.region, comparison.region.set, event.date, logged=FA
   data<-melt(data, id=c("date","post"), variable.name="group", value.name="counts")
   if (logged){
     data$counts<-log(1+data$counts)
+  }
+  pre.target.avg<-mean(data[data$post==FALSE & data$group == "Target",'counts'])
+  pre.comparison.avg<-mean(data[data$post==FALSE & data$group == "Comparison",'counts'])
+  if (normalize){
+   data$counts[data$group == "Comparison"] <- data$counts[data$group == "Comparison"] * pre.target.avg/pre.comparison.avg
   }
   data <- within(data, group <- relevel(group, ref = "Comparison")) # Set comparison as base group
   model<-lm(counts ~ post*group, data=data)
