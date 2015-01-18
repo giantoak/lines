@@ -100,11 +100,12 @@
 								break;
 								
 							case 'select-one':
-							case 'select-multi':
+							case 'select-multiple':
 								this.selectedIndex = -1;
 								break;
 							
 							default:
+                                var jeff = 0;
 								throw new Error('Unsupported input type.');
 								break;
 						}
@@ -132,6 +133,7 @@
 			
 			// @todo typecheck
 			
+            var jeff = 0
 			if (inputElm.length > 1) {
 				// @todo If there is more than one input represented by the selector, make sure that it is a radio group with the same name.
 				

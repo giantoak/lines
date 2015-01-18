@@ -46,14 +46,25 @@ def select(request):
     context = RequestContext(request, output)
     return HttpResponse( template.render(context))
 
+def get_columns(request, features_id):
+    try:
+        #panel = TimeSeriesFile.objects.get(id=panel_id)
+        ##if not panel.r_session_id:
+            ##panel.load()
+        features = TimeSeriesFile.objects.get(id=features_id)
+        data = pandas.read_csv(features.file)
+        cols = data.columns.values.tolist()
+        return HttpResponse(json.dumps(cols,mimetype='application/json'))
+    except Exception as e:
+        return HttpResponse(json.dumps({'Error':'File Probably not found'},mimetype='application/json'))
 def loaded(request, panel_id, features_id):
     try:
-        panel = TimeSeriesFile.objects.get(id=panel_id)
-        if not panel.r_session_id:
-            panel.load()
-        features = TimeSeriesFile.objects.get(id=features_id)
-        if not features.r_session_id:
-            features.load()
+        #panel = TimeSeriesFile.objects.get(id=panel_id)
+        ##if not panel.r_session_id:
+            ##panel.load()
+        #features = TimeSeriesFile.objects.get(id=features_id)
+        ##if not features.r_session_id:
+            ##features.load()
         output = {}
         output['panels'] = panel_id
         output['datas'] = features_id

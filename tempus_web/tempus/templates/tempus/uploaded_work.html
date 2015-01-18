@@ -423,21 +423,30 @@ plot_diff()
 <form action="" id="questionnaire">
     <fieldset>
         <div class='row trunk-section'>
-            <div class="question">Do you have a clear sense of the comparison group that you'd like to?
-            </div>
+            <p class="question">Select a location of interest to you</p>
             <div class="input-group">
+                    <select>
+                        <option value="dc">dc</option>
+                        <option value="baltimore">baltimore</option>
+                        <option value="abilene">abilene</option>
+                        <option value="akroncanton">akroncanton</option>
+                        <option value="albany">albany</option>
+                        <option value="albanyga">albanyga</option>
+                        <option value="albuquerque">albuquerque</option>
+                    </select>
+                    <br>
                 <label>
-                    <span>No</span><input type="radio" name="question[1]" value="0">
+                    <span style="display: none;">Stop</span><input type="radio" name="question[1]" value="0">
+                    <span>Continue</span><input type="radio" name="question[1]" value="1">
                 </label>
-                <label>
-                    <span>Yes</span><input type="radio" name="question[1]" value="1">
-                </label>
+                    <div id="main"/>
             </div>
         </div>
     </fieldset>
     <fieldset>
         <div class='row trunk-section'>
-            <div class="question">Do you have a specific event date in mind that might have caused a change in your output?</div>
+            <div class="question">Do you have a clear sense of the comparison group that you'd like to?
+            </div>
             <div class="input-group">
                 <label>
                     <span>No</span><input type="radio" name="question[2]" value="0">
@@ -450,13 +459,26 @@ plot_diff()
     </fieldset>
     <fieldset>
         <div class='row trunk-section'>
-            <p class="question">Did you see the Hollywood Costume collection?</p>
+            <div class="question">When thinking about comparison locations, what characterstics might be the most useful?</div>
             <div class="input-group">
                 <label>
-                    <span>No</span><input type="radio" name="question[3]" value="0">
+                    <span>No</span><input type="radio" name="question[4]" value="0">
                 </label>
                 <label>
-                    <span>Yes</span><input type="radio" name="question[3]" value="1">
+                    <span>Yes</span><input type="radio" name="question[4]" value="1">
+                </label>
+            </div>
+        </div>
+    </fieldset>
+    <fieldset>
+        <div class='row trunk-section'>
+            <div class="question">Do you have a specific event date in mind that might have caused a change in your output?</div>
+            <div class="input-group">
+                <label>
+                    <span>No</span><input type="radio" name="question[4]" value="0">
+                </label>
+                <label>
+                    <span>Yes</span><input type="radio" name="question[4]" value="1">
                 </label>
             </div>
         </div>
