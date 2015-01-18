@@ -16,6 +16,8 @@ diffindiff<-function(target.region, comparison.region.set, event.date, logged=FA
   ed<-as.Date(event.date, "%Y-%m-%d")
   
   data$post = data$date > ed
+  data <- data[data$date > as.Date("2013-09-01","%Y-%m-%d"),]
+  data <- data[data$date < as.Date("2014-06-01","%Y-%m-%d"),]
   data<-melt(data, id=c("date","post"), variable.name="group", value.name="counts")
   if (logged){
     data$counts<-log(1+data$counts)
