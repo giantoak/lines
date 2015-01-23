@@ -15,10 +15,10 @@ get_features_data<-function(target.region='dc', num.matches=4,region.var='region
   #print(data)
   #return(target.region)
   #return(data)
-  matching.formula<-paste(target.varname,'~',cat(comparison.vars,sep='+'))
-  match<-matchit(matching.formula, data=data)
+  matching.formula<-paste(target.varname,'~',paste(comparison.vars,collapse=' + '))
+  match<-matchit(as.formula(matching.formula), data=data)
   data[score.varname] <- match$distance
-  target.row <- data[data[target.varname],]
+  target.row <- data[data[[target.varname]],]
   data<-data[!data[target.varname],]
   data<-data[order(data[score.varname], decreasing=TRUE),]
   data<-data[1:num.matches,]
